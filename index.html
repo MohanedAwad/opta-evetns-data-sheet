@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Opta F24 — Complete Reference Manual</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0d0d;
+  --surface: #141414;
+  --surface2: #1c1c1c;
+  --surface3: #242424;
+  --border: #2a2a2a;
+  --border2: #333;
+  --text: #d4d4d4;
+  --text2: #8a8a8a;
+  --text3: #555;
+  --bright: #f0f0f0;
+  --pass: #4a9eff;
+  --shot: #ff6b35;
+  --gk: #2dd4a0;
+  --def: #a78bfa;
+  --card: #fbbf24;
+  --admin: #64748b;
+  --danger: #f87171;
+  --success: #4ade80;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'IBM Plex Sans', sans-serif;
+  --serif: 'IBM Plex Serif', serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 13px; line-height: 1.6; }
+
+/* LAYOUT */
+.shell { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 260px; flex-shrink: 0; background: var(--surface);
+  border-right: 1px solid var(--border); position: sticky; top: 0;
+  height: 100vh; overflow-y: auto; display: flex; flex-direction: column;
+}
+.main-content { flex: 1; overflow-x: hidden; }
+
+/* SIDEBAR */
+.sidebar-logo {
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-logo .logo-label { font-family: var(--mono); font-size: 9px; letter-spacing: 3px; color: var(--text3); text-transform: uppercase; margin-bottom: 4px; }
+.sidebar-logo .logo-title { font-family: var(--mono); font-size: 15px; font-weight: 600; color: var(--bright); }
+.sidebar-logo .logo-sub { font-size: 10px; color: var(--text3); margin-top: 2px; }
+
+.nav-section { padding: 12px 0 4px; }
+.nav-section-label { font-family: var(--mono); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text3); padding: 0 16px 6px; }
+.nav-link {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 16px; font-size: 12px; color: var(--text2);
+  cursor: pointer; transition: all 0.15s; border-left: 2px solid transparent;
+  text-decoration: none;
+}
+.nav-link:hover { color: var(--bright); background: var(--surface2); }
+.nav-link.active { color: var(--bright); border-left-color: var(--pass); background: rgba(74,158,255,0.05); }
+.nav-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+/* HEADER BANNER */
+.page-header {
+  background: linear-gradient(135deg, #0d0d0d 0%, #141420 50%, #0d0d0d 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 40px 48px 32px;
+  position: relative; overflow: hidden;
+}
+.page-header::after {
+  content: 'F24'; position: absolute; right: 48px; top: 50%;
+  transform: translateY(-50%); font-family: var(--mono); font-size: 120px;
+  font-weight: 600; color: rgba(255,255,255,0.025); pointer-events: none;
+  letter-spacing: -4px;
+}
+.ph-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 3px; color: var(--pass); text-transform: uppercase; margin-bottom: 10px; }
+.ph-title { font-family: var(--serif); font-size: 36px; font-weight: 600; color: var(--bright); line-height: 1.2; margin-bottom: 8px; }
+.ph-sub { color: var(--text2); font-size: 13px; max-width: 600px; line-height: 1.7; }
+.ph-stats { display: flex; gap: 32px; margin-top: 24px; }
+.ph-stat .num { font-family: var(--mono); font-size: 28px; font-weight: 600; color: var(--bright); }
+.ph-stat .lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 1px; color: var(--text3); text-transform: uppercase; margin-top: 2px; }
+
+/* SECTIONS */
+.section { padding: 40px 48px; border-bottom: 1px solid var(--border); }
+.section:last-child { border-bottom: none; }
+.section-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 2px; color: var(--text3); text-transform: uppercase; margin-bottom: 8px; }
+.section-title { font-family: var(--serif); font-size: 26px; font-weight: 600; color: var(--bright); margin-bottom: 6px; }
+.section-desc { color: var(--text2); font-size: 13px; line-height: 1.7; margin-bottom: 28px; max-width: 800px; }
+
+/* TABLES */
+.ref-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 24px; }
+.ref-table th {
+  background: var(--surface2); padding: 9px 14px; text-align: left;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 1px;
+  color: var(--text3); text-transform: uppercase; border-bottom: 1px solid var(--border2);
+  position: sticky; top: 0; z-index: 1;
+}
+.ref-table td { padding: 9px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.ref-table tr:hover td { background: rgba(255,255,255,0.02); }
+.ref-table td.id { font-family: var(--mono); color: var(--pass); font-size: 11px; font-weight: 500; white-space: nowrap; }
+.ref-table td.name { font-weight: 500; color: var(--bright); }
+.ref-table td.desc { color: var(--text2); line-height: 1.6; }
+.ref-table td.outcome0 { color: var(--danger); font-size: 11px; }
+.ref-table td.outcome1 { color: var(--success); font-size: 11px; }
+.ref-table td.mono { font-family: var(--mono); font-size: 11px; color: var(--text2); }
+.ref-table td.val { font-family: var(--mono); font-size: 11px; color: var(--gk); }
+
+/* CATEGORY BADGES */
+.badge {
+  display: inline-block; font-family: var(--mono); font-size: 9px;
+  padding: 2px 6px; border-radius: 2px; font-weight: 500; white-space: nowrap;
+}
+.badge-pass { background: rgba(74,158,255,0.15); color: var(--pass); }
+.badge-shot { background: rgba(255,107,53,0.15); color: var(--shot); }
+.badge-gk { background: rgba(45,212,160,0.15); color: var(--gk); }
+.badge-def { background: rgba(167,139,250,0.15); color: var(--def); }
+.badge-card { background: rgba(251,191,36,0.15); color: var(--card); }
+.badge-admin { background: rgba(100,116,139,0.15); color: #94a3b8; }
+.badge-deprecated { background: rgba(100,100,100,0.15); color: var(--text3); text-decoration: line-through; }
+
+/* CALLOUT BOXES */
+.callout {
+  border-left: 3px solid; padding: 14px 18px; border-radius: 0 4px 4px 0;
+  margin: 16px 0; font-size: 12px; line-height: 1.7;
+}
+.callout-info { border-color: var(--pass); background: rgba(74,158,255,0.05); }
+.callout-warn { border-color: var(--card); background: rgba(251,191,36,0.05); }
+.callout-danger { border-color: var(--danger); background: rgba(248,113,113,0.05); }
+.callout-tip { border-color: var(--gk); background: rgba(45,212,160,0.05); }
+.callout strong { color: var(--bright); }
+.callout code { font-family: var(--mono); font-size: 11px; background: rgba(255,255,255,0.07); padding: 1px 4px; border-radius: 2px; }
+
+/* CODE BLOCKS */
+pre {
+  background: #080808; border: 1px solid var(--border);
+  border-radius: 4px; padding: 16px 18px; overflow-x: auto;
+  font-family: var(--mono); font-size: 11px; line-height: 1.8;
+  color: #a8b5c8; margin: 12px 0;
+}
+.c-kw { color: #c792ea; }
+.c-fn { color: #82aaff; }
+.c-str { color: #c3e88d; }
+.c-num { color: #f78c6c; }
+.c-cmt { color: #546e7a; font-style: italic; }
+.c-key { color: #89ddff; }
+
+/* PITCH DIAGRAM */
+.pitch-container { background: #0a1a0a; border: 1px solid var(--border); border-radius: 4px; padding: 24px; margin: 16px 0; }
+.pitch-svg { width: 100%; max-width: 700px; display: block; margin: 0 auto; }
+
+/* GOAL DIAGRAM */
+.goal-container { background: #0a0a1a; border: 1px solid var(--border); border-radius: 4px; padding: 20px; margin: 16px 0; display: inline-block; }
+
+/* FORMATION GRID */
+.formation-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+.formation-card {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 4px; padding: 14px; text-align: center;
+}
+.formation-card .f-num { font-family: var(--mono); font-size: 10px; color: var(--text3); margin-bottom: 4px; }
+.formation-card .f-name { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--pass); }
+
+/* QUALIFIER GROUP HEADERS */
+.q-group-header {
+  background: var(--surface2); border: 1px solid var(--border); border-radius: 4px;
+  padding: 12px 16px; margin: 24px 0 12px;
+  display: flex; align-items: center; gap: 12px;
+}
+.q-group-header .qgh-title { font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--bright); }
+.q-group-header .qgh-sub { font-size: 11px; color: var(--text2); }
+.q-group-header .qgh-badge { margin-left: auto; }
+
+/* SEARCH */
+.search-wrap { position: relative; margin-bottom: 20px; }
+.search-input {
+  width: 100%; background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 4px; padding: 10px 14px 10px 38px;
+  font-family: var(--mono); font-size: 12px; color: var(--text);
+  outline: none; transition: border-color 0.2s;
+}
+.search-input:focus { border-color: var(--pass); }
+.search-input::placeholder { color: var(--text3); }
+.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text3); font-size: 14px; }
+
+/* STAT QUERY TABLE */
+.stat-formula {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 4px; padding: 10px 14px; margin: 4px 0;
+  font-family: var(--mono); font-size: 11px; color: #a8b5c8; line-height: 1.6;
+}
+.stat-row { display: grid; grid-template-columns: 200px 80px 80px 160px 1fr; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border); align-items: start; font-size: 11px; }
+.stat-row:last-child { border-bottom: none; }
+.stat-row .sr-name { color: var(--bright); font-weight: 500; }
+.stat-row .sr-type { font-family: var(--mono); color: var(--pass); }
+.stat-row .sr-out { font-family: var(--mono); color: var(--gk); }
+.stat-row .sr-qual { font-family: var(--mono); color: var(--card); font-size: 10px; }
+.stat-row .sr-note { color: var(--text2); font-size: 10px; }
+
+/* PERIOD TABLE */
+.period-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+.period-card {
+  background: var(--surface2); border: 1px solid var(--border); border-radius: 3px;
+  padding: 10px 14px; display: flex; gap: 12px; align-items: center;
+}
+.period-card .pid { font-family: var(--mono); font-size: 18px; font-weight: 600; color: var(--pass); min-width: 28px; }
+.period-card .pname { font-size: 12px; color: var(--text); }
+
+/* ASSOCIATED QUALS */
+.assoc-block { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 12px 16px; margin: 6px 0; }
+.assoc-row { display: flex; gap: 12px; align-items: flex-start; padding: 5px 0; border-bottom: 1px solid var(--border); font-size: 11px; }
+.assoc-row:last-child { border-bottom: none; }
+.assoc-tid { font-family: var(--mono); color: var(--shot); min-width: 32px; font-weight: 600; }
+.assoc-name { color: var(--bright); min-width: 160px; }
+.assoc-qids { font-family: var(--mono); color: var(--text2); font-size: 10px; line-height: 1.8; flex: 1; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .shell { flex-direction: column; }
+  .sidebar { width: 100%; height: auto; position: relative; }
+  .section { padding: 28px 20px; }
+  .page-header { padding: 28px 20px 24px; }
+  .ph-stats { gap: 20px; flex-wrap: wrap; }
+  .stat-row { grid-template-columns: 1fr 1fr; }
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #444; }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-label">Opta</div>
+    <div class="logo-title">F24 Reference</div>
+    <div class="logo-sub">Complete Data Manual · All Appendices</div>
+  </div>
+
+  <nav>
+    <div class="nav-section">
+      <div class="nav-section-label">Core Structure</div>
+      <a class="nav-link" href="#event-tag"><div class="nav-dot" style="background:#64748b"></div>Event Tag Anatomy</a>
+      <a class="nav-link" href="#periods"><div class="nav-dot" style="background:#64748b"></div>Period IDs</a>
+      <a class="nav-link" href="#outcomes"><div class="nav-dot" style="background:#64748b"></div>Outcome Definitions</a>
+      <a class="nav-link" href="#ordering"><div class="nav-dot" style="background:#64748b"></div>Event Ordering</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">All 58 Event Types</div>
+      <a class="nav-link" href="#events-pass"><div class="nav-dot" style="background:#4a9eff"></div>Pass & Ball Movement</a>
+      <a class="nav-link" href="#events-shot"><div class="nav-dot" style="background:#ff6b35"></div>Shot Events</a>
+      <a class="nav-link" href="#events-gk"><div class="nav-dot" style="background:#2dd4a0"></div>Goalkeeper Events</a>
+      <a class="nav-link" href="#events-def"><div class="nav-dot" style="background:#a78bfa"></div>Defensive Events</a>
+      <a class="nav-link" href="#events-duel"><div class="nav-dot" style="background:#a78bfa"></div>Duel Events</a>
+      <a class="nav-link" href="#events-card"><div class="nav-dot" style="background:#fbbf24"></div>Cards & Fouls</a>
+      <a class="nav-link" href="#events-admin"><div class="nav-dot" style="background:#64748b"></div>Admin & System</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">All 205 Qualifiers</div>
+      <a class="nav-link" href="#q-pass"><div class="nav-dot" style="background:#4a9eff"></div>Pass Qualifiers</a>
+      <a class="nav-link" href="#q-shot"><div class="nav-dot" style="background:#ff6b35"></div>Shot Qualifiers</a>
+      <a class="nav-link" href="#q-shot-loc"><div class="nav-dot" style="background:#ff6b35"></div>Shot Location</a>
+      <a class="nav-link" href="#q-bodypart"><div class="nav-dot" style="background:#ff6b35"></div>Body Part & Situation</a>
+      <a class="nav-link" href="#q-gk"><div class="nav-dot" style="background:#2dd4a0"></div>GK Qualifiers</a>
+      <a class="nav-link" href="#q-foul"><div class="nav-dot" style="background:#fbbf24"></div>Foul & Card</a>
+      <a class="nav-link" href="#q-def"><div class="nav-dot" style="background:#a78bfa"></div>Defensive</a>
+      <a class="nav-link" href="#q-lineup"><div class="nav-dot" style="background:#64748b"></div>Lineup & Formation</a>
+      <a class="nav-link" href="#q-general"><div class="nav-dot" style="background:#64748b"></div>General & Admin</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Coordinate Systems</div>
+      <a class="nav-link" href="#coords-pitch"><div class="nav-dot" style="background:#2dd4a0"></div>Pitch Coordinates</a>
+      <a class="nav-link" href="#coords-goal"><div class="nav-dot" style="background:#2dd4a0"></div>Goalmouth Coordinates</a>
+      <a class="nav-link" href="#coords-zones"><div class="nav-dot" style="background:#2dd4a0"></div>Pitch Zones (Q56)</a>
+      <a class="nav-link" href="#coords-shot-zones"><div class="nav-dot" style="background:#2dd4a0"></div>Shot Zone Grid</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Appendices</div>
+      <a class="nav-link" href="#assoc-quals"><div class="nav-dot" style="background:#c792ea"></div>Assoc. Qualifiers per Event</a>
+      <a class="nav-link" href="#formations"><div class="nav-dot" style="background:#c792ea"></div>Formation Codes (Q130)</a>
+      <a class="nav-link" href="#stat-queries"><div class="nav-dot" style="background:#c792ea"></div>Official Stat Queries</a>
+      <a class="nav-link" href="#assists"><div class="nav-dot" style="background:#c792ea"></div>Assist & Key Pass Logic</a>
+      <a class="nav-link" href="#deleted"><div class="nav-dot" style="background:#c792ea"></div>Deleted & Edited Events</a>
+      <a class="nav-link" href="#touches"><div class="nav-dot" style="background:#c792ea"></div>Touch Calculation</a>
+    </div>
+  </nav>
+</aside>
+
+<!-- MAIN -->
+<main class="main-content">
+
+<!-- HEADER -->
+<div class="page-header">
+  <div class="ph-eyebrow">Opta F24 Feed — Complete Reference Manual</div>
+  <div class="ph-title">The Definitive Guide to<br>Opta Event Data</div>
+  <div class="ph-sub">Every event type, qualifier, coordinate system, formation code, outcome definition, and stat query formula — extracted directly from the official Opta F24 appendices documentation.</div>
+  <div class="ph-stats">
+    <div class="ph-stat"><div class="num">58</div><div class="lbl">Event Types</div></div>
+    <div class="ph-stat"><div class="num">205</div><div class="lbl">Qualifier Codes</div></div>
+    <div class="ph-stat"><div class="num">17</div><div class="lbl">Formation Codes</div></div>
+    <div class="ph-stat"><div class="num">13</div><div class="lbl">Period IDs</div></div>
+    <div class="ph-stat"><div class="num">14</div><div class="lbl">Appendices</div></div>
+  </div>
+</div>
+
+<!-- ═══════════ EVENT TAG ANATOMY ═══════════ -->
+<section class="section" id="event-tag">
+  <div class="section-eyebrow">Appendix 5</div>
+  <div class="section-title">The Event Tag — Field by Field</div>
+  <div class="section-desc">Every match action is represented as a single event object. Understanding each field is fundamental before working with any Opta data.</div>
+
+  <pre><span class="c-cmt">// Example event object (JSON equivalent of XML &lt;Event&gt; tag)</span>
+{
+  <span class="c-key">"id"</span>: <span class="c-num">2044318208</span>,         <span class="c-cmt">// Globally unique integer. Use this to database/index events.</span>
+  <span class="c-key">"eventId"</span>: <span class="c-num">153</span>,         <span class="c-cmt">// Order within this match for this team ONLY. Not global.</span>
+  <span class="c-key">"typeId"</span>: <span class="c-num">5</span>,            <span class="c-cmt">// The event type. See full event type table below.</span>
+  <span class="c-key">"periodId"</span>: <span class="c-num">1</span>,          <span class="c-cmt">// Which period. See Period ID table. 1=H1, 2=H2, 3=ET1 etc.</span>
+  <span class="c-key">"timeMin"</span>: <span class="c-num">19</span>,          <span class="c-cmt">// Minute within the period (not total match time)</span>
+  <span class="c-key">"timeSec"</span>: <span class="c-num">31</span>,          <span class="c-cmt">// Seconds within that minute</span>
+  <span class="c-key">"playerId"</span>: <span class="c-str">"49396"</span>,    <span class="c-cmt">// Opta Player ID. Absent for team-level events.</span>
+  <span class="c-key">"contestantId"</span>: <span class="c-str">"368"</span>, <span class="c-cmt">// Opta Team ID.</span>
+  <span class="c-key">"outcome"</span>: <span class="c-num">1</span>,           <span class="c-cmt">// Success/failure. Meaning varies by typeId — see Outcome table.</span>
+  <span class="c-key">"x"</span>: <span class="c-num">-2.0</span>,              <span class="c-cmt">// Pitch X at moment of event (0-100, always normalized L→R attack)</span>
+  <span class="c-key">"y"</span>: <span class="c-num">53.3</span>,             <span class="c-cmt">// Pitch Y at moment of event (0-100)</span>
+  <span class="c-key">"timeStamp"</span>: <span class="c-str">"2012-06-23T20:04:45.40Z"</span>,  <span class="c-cmt">// Wall clock when event occurred</span>
+  <span class="c-key">"lastModified"</span>: <span class="c-str">"2012-06-23T20:04:45Z"</span>,    <span class="c-cmt">// Last edit time. Use to detect edits.</span>
+  <span class="c-key">"qualifier"</span>: [...]    <span class="c-cmt">// Array of qualifier objects — see qualifier sections</span>
+}</pre>
+
+  <div class="callout callout-warn">
+    <strong>⚠ Critical: Event Ordering.</strong> <code>eventId</code> is NOT reliable for chronological ordering due to analyst edits. Always sort by: <code>contestantId → periodId → timeMin → timeSec → timeStamp</code>
+  </div>
+  <div class="callout callout-info">
+    <strong>ℹ lastModified.</strong> Only parse events where <code>lastModified</code> has changed since your last parse. This avoids re-processing unchanged events in live feeds.
+  </div>
+  <div class="callout callout-tip">
+    <strong>💡 Coordinate Normalization.</strong> X/Y coordinates are <em>always</em> normalized so the attacking direction is left→right (x increases toward attacking goal). This is true for BOTH teams and BOTH halves. Q127 shows actual TV camera direction but coordinates are already normalized — do not flip them.
+  </div>
+</section>
+
+<!-- ═══════════ PERIOD IDs ═══════════ -->
+<section class="section" id="periods">
+  <div class="section-eyebrow">Appendix 10</div>
+  <div class="section-title">Period ID Reference</div>
+  <div class="section-desc">The <code>periodId</code> field identifies which phase of the match an event belongs to. Critical for filtering and time calculations.</div>
+
+  <div class="period-grid">
+    <div class="period-card"><div class="pid">15</div><div class="pname">Pre-game</div></div>
+    <div class="period-card"><div class="pid">16</div><div class="pname">Pre-match (Team Setup)</div></div>
+    <div class="period-card"><div class="pid">1</div><div class="pname">First Half</div></div>
+    <div class="period-card"><div class="pid">10</div><div class="pname">First Half Ends</div></div>
+    <div class="period-card"><div class="pid">2</div><div class="pname">Second Half</div></div>
+    <div class="period-card"><div class="pid">11</div><div class="pname">Second Half Ends</div></div>
+    <div class="period-card"><div class="pid">3</div><div class="pname">Extra Time — 1st Period</div></div>
+    <div class="period-card"><div class="pid">12</div><div class="pname">ET 1st Period Ends</div></div>
+    <div class="period-card"><div class="pid">4</div><div class="pname">Extra Time — 2nd Period</div></div>
+    <div class="period-card"><div class="pid">13</div><div class="pname">ET 2nd Period Ends</div></div>
+    <div class="period-card"><div class="pid">5</div><div class="pname">Penalty Shoot-out</div></div>
+    <div class="period-card"><div class="pid">14</div><div class="pname">Post-game</div></div>
+  </div>
+  <div class="callout callout-tip" style="margin-top:16px">
+    <strong>💡 Match time calculation.</strong> To get actual match minute: if periodId=1, matchMin = timeMin. If periodId=2, matchMin = 45 + timeMin. If periodId=3, matchMin = 90 + timeMin. If periodId=4, matchMin = 105 + timeMin.
+  </div>
+</section>
+
+<!-- ═══════════ OUTCOMES ═══════════ -->
+<section class="section" id="outcomes">
+  <div class="section-eyebrow">Appendix 8</div>
+  <div class="section-title">Outcome Definitions — All Event Types</div>
+  <div class="section-desc">The outcome field means different things for different events. Many are always 1. The table below documents every case.</div>
+
+  <table class="ref-table">
+    <thead><tr><th>typeId</th><th>Event Name</th><th style="color:#f87171">Outcome = 0</th><th style="color:#4ade80">Outcome = 1</th></tr></thead>
+    <tbody>
+      <tr><td class="id">1</td><td class="name">Pass</td><td class="outcome0">Pass did not find teammate</td><td class="outcome1">Successful pass — reached teammate</td></tr>
+      <tr><td class="id">2</td><td class="name">Offside Pass</td><td class="outcome0">Always 1</td><td class="outcome1">Always 1</td></tr>
+      <tr><td class="id">3</td><td class="name">Take On</td><td class="outcome0">Lost possession / tackled</td><td class="outcome1">Successful dribble past opponent</td></tr>
+      <tr><td class="id">4</td><td class="name">Foul</td><td class="outcome0">Player who was fouled (victim)</td><td class="outcome1">Player who committed the foul</td></tr>
+      <tr><td class="id">5</td><td class="name">Out</td><td class="outcome0">Team that put ball out of play</td><td class="outcome1">Team that therefore gains possession</td></tr>
+      <tr><td class="id">6</td><td class="name">Corner Awarded</td><td class="outcome0">Team that conceded the corner</td><td class="outcome1">Team that won the corner</td></tr>
+      <tr><td class="id">7</td><td class="name">Tackle</td><td class="outcome0">Challenger did not win possession (other team retains)</td><td class="outcome1">Successful tackle — wins ball from opponent</td></tr>
+      <tr><td class="id">8</td><td class="name">Interception</td><td class="outcome0">Always 1</td><td class="outcome1">Always 1</td></tr>
+      <tr><td class="id">10</td><td class="name">Save</td><td class="outcome0">Always 1</td><td class="outcome1">Always 1</td></tr>
+      <tr><td class="id">11</td><td class="name">Claim</td><td class="outcome0">Keeper drops ball (separate pick-up follows)</td><td class="outcome1">Keeper catches cross cleanly in one attempt</td></tr>
+      <tr><td class="id">12</td><td class="name">Clearance</td><td class="outcome0">Clears but possession goes to opponent</td><td class="outcome1">Clears to teammate OR straight out of play</td></tr>
+      <tr><td class="id">13</td><td class="name">Miss</td><td class="outcome0">Always 1</td><td class="outcome1">Always 1</td></tr>
+      <tr><td class="id">14</td><td class="name">Post</td><td class="outcome0">Always 1</td><td class="outcome1">Always 1</td></tr>
+      <tr><td class="id">15</td><td class="name">Attempt Saved</td><td class="outcome0">Always 1</td><td class="outcome1">Always 1</td></tr>
+      <tr><td class="id">16</td><td class="name">Goal</td><td class="outcome0">Always 1</td><td class="outcome1">Always 1</td></tr>
+      <tr><td class="id">17</td><td class="name">Card</td><td class="outcome0">Always 1</td><td class="outcome1">Always 1</td></tr>
+      <tr><td class="id">44</td><td class="name">Aerial</td><td class="outcome0">Lost aerial duel</td><td class="outcome1">Won aerial duel</td></tr>
+      <tr><td class="id">45</td><td class="name">Challenge</td><td class="outcome0">Always 0 — by definition unsuccessful (else = tackle)</td><td class="outcome1">Always 0</td></tr>
+      <tr><td class="id">59</td><td class="name">Keeper Sweeper</td><td class="outcome0">Clears but possession goes to opponent</td><td class="outcome1">Clears to teammate or out of play</td></tr>
+      <tr><td class="id">61</td><td class="name">Ball Touch</td><td class="outcome0">Unsuccessfully controlled — lost possession</td><td class="outcome1">Ball simply hit player unintentionally</td></tr>
+      <tr><td class="id">60</td><td class="name">Chance Missed</td><td class="outcome0">Always 0</td><td class="outcome1">Always 0</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:11px;color:var(--text3);margin-top:8px">All other event types (18,19,20,21,22,23,24,25,27,28,30,32,34,35,36,37,38,39,40,41,42,43,47,49,50,51,52,53,54,55,56,57,58,63,64,65) are always set to outcome=1.</p>
+</section>
+
+<!-- ═══════════ EVENTS: PASS ═══════════ -->
+<section class="section" id="events-pass">
+  <div class="section-eyebrow">Event Types — Pass & Ball Movement</div>
+  <div class="section-title">Pass & Ball Movement Events</div>
+  <div class="section-desc">The most frequent events in any match. Event type 1 alone can account for 800–1200 events per game.</div>
+
+  <table class="ref-table">
+    <thead><tr><th>ID</th><th>Name</th><th>Full Description</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="id">1</td><td class="name">Pass <span class="badge badge-pass">PASS</span></td><td class="desc">Any pass attempted from one player to another — free kicks, corners, throw-ins, goal kicks and goal assists all included</td><td class="mono">~1000/game. Outcome 1=completed. Exclude Q107,123,124 for open-play passes.</td></tr>
+      <tr><td class="id">2</td><td class="name">Offside Pass</td><td class="desc">Attempted pass made to a player who is in an offside position. Full pass qualifiers apply.</td><td class="mono">Includes Q1,Q2,Q4 etc. same as type 1.</td></tr>
+      <tr><td class="id">3</td><td class="name">Take On <span class="badge badge-pass">CARRY</span></td><td class="desc">Attempted dribble past an opponent. Excludes when Q211 is present (overrun — ball runs away, not always a duel).</td><td class="mono">Q211 = ball overrun (different to clean dribble)</td></tr>
+      <tr><td class="id">5</td><td class="name">Out</td><td class="desc">Ball goes out of play for a throw-in or goal kick. Includes shield/clearance out of play.</td><td class="mono">Q56 zone shows where it went out</td></tr>
+      <tr><td class="id">6</td><td class="name">Corner Awarded</td><td class="desc">Ball goes out of play for a corner kick.</td><td class="mono">Q219-222 = post position. Q223-225 = delivery type</td></tr>
+      <tr><td class="id">42</td><td class="name">Good Skill <span class="badge badge-deprecated">DEPRECATED</span></td><td class="desc">Player shows a good piece of skill — step over, turn. NO LONGER USED.</td><td class="mono">Ignore in modern data</td></tr>
+      <tr><td class="id">50</td><td class="name">Dispossessed</td><td class="desc">Player is successfully tackled and loses possession. The dispossessed player's event.</td><td class="mono">Paired with type 7 (tackle) from opponent</td></tr>
+      <tr><td class="id">56</td><td class="name">Shield Ball</td><td class="desc">Defender uses body to shield ball from opponent as it rolls out of play.</td><td class="mono">Rare — out-of-play shield</td></tr>
+      <tr><td class="id">57</td><td class="name">Foul Throw-in</td><td class="desc">A throw-in not taken correctly — awarded to opposing team.</td><td class="mono">Officiating error by thrower</td></tr>
+      <tr><td class="id">60</td><td class="name">Chance Missed</td><td class="desc">Player in good position to score but did not get a shot off — only just missed the pass. NOT a shot. Always outcome=0.</td><td class="mono">Analyst-tagged near-miss (no shot taken)</td></tr>
+      <tr><td class="id">61</td><td class="name">Ball Touch</td><td class="desc">Bad touch — player loses possession. Outcome 1 = ball hit player unintentionally. Outcome 0 = player tried to control but failed.</td><td class="mono">0=failed control, 1=unintentional touch</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══════════ EVENTS: SHOT ═══════════ -->
+<section class="section" id="events-shot">
+  <div class="section-eyebrow">Event Types — Shots</div>
+  <div class="section-title">Shot Events (typeId 13, 14, 15, 16)</div>
+  <div class="section-desc">Four shot outcomes. The xG model is trained on these four event types. Every shot has x,y coordinates and rich qualifier data.</div>
+
+  <table class="ref-table">
+    <thead><tr><th>ID</th><th>Name</th><th>Full Description</th><th>xG Label</th></tr></thead>
+    <tbody>
+      <tr><td class="id">13</td><td class="name">Miss <span class="badge badge-shot">SHOT</span></td><td class="desc">Any shot on goal which goes wide or over the goal. Includes all miss qualifiers (Q73=left, Q74=high, Q75=right).</td><td class="mono" style="color:var(--danger)">label = 0</td></tr>
+      <tr><td class="id">14</td><td class="name">Post <span class="badge badge-shot">SHOT</span></td><td class="desc">Ball hits the frame of the goal (post or crossbar). Q138 confirms woodwork hit.</td><td class="mono" style="color:var(--danger)">label = 0</td></tr>
+      <tr><td class="id">15</td><td class="name">Attempt Saved <span class="badge badge-shot">SHOT</span></td><td class="desc">Shot saved by GK (or blocked). Q82 = blocked by outfield player. Also occurs with Q190 if shot was actually going wide but GK saved it anyway.</td><td class="mono" style="color:var(--danger)">label = 0</td></tr>
+      <tr><td class="id">16</td><td class="name">Goal <span class="badge badge-shot">GOAL</span></td><td class="desc">All goals. Q28 = own goal (team_id = conceding team; use inverse coordinates). Q9 = penalty goal. Q136 = keeper touched.</td><td class="mono" style="color:var(--success)">label = 1</td></tr>
+      <tr><td class="id">38</td><td class="name">Temp_Goal <span class="badge badge-admin">TEMP</span></td><td class="desc">Goal occurred but pending full qualifier detail from Opta. Will change to event 16. Filter out of analysis.</td><td class="mono">→ becomes type 16</td></tr>
+      <tr><td class="id">39</td><td class="name">Temp_Attempt <span class="badge badge-admin">TEMP</span></td><td class="desc">Shot occurred but pending full detail. Will become type 15.</td><td class="mono">→ becomes type 15</td></tr>
+    </tbody>
+  </table>
+  <div class="callout callout-warn">
+    <strong>⚠ Shots on Target definition.</strong> Shots on target = typeId IN (15, 16) <em>EXCLUDING</em> those with Q82 (blocked shots). <code>shots_on_target = events where typeId in [15,16] and Q82 not present</code>
+  </div>
+  <div class="callout callout-info">
+    <strong>ℹ Own Goal coordinates.</strong> When Q28 (own goal) is present on typeId=16, the team_id is the <em>conceding</em> team, not the scoring team. Use inverse coordinates (100−x, 100−y).
+  </div>
+</section>
+
+<!-- ═══════════ EVENTS: GK ═══════════ -->
+<section class="section" id="events-gk">
+  <div class="section-eyebrow">Event Types — Goalkeeper</div>
+  <div class="section-title">Goalkeeper Events</div>
+  <div class="section-desc">Rich goalkeeper event set for building keeper performance models. Each save event has technique qualifiers enabling xGOT calculations.</div>
+
+  <table class="ref-table">
+    <thead><tr><th>ID</th><th>Name</th><th>Full Description</th><th>Key Qualifiers</th></tr></thead>
+    <tbody>
+      <tr><td class="id">10</td><td class="name">Save <span class="badge badge-gk">GK</span></td><td class="desc">Goalkeeper saves a shot on goal. Also used for outfield player blocks when Q94 is present.</td><td class="mono">Q88-93: technique. Q102/103: goalmouth position. Q89: 1v1. Q94: def block.</td></tr>
+      <tr><td class="id">11</td><td class="name">Claim <span class="badge badge-gk">GK</span></td><td class="desc">Goalkeeper catches a crossed ball. Outcome 1 = clean catch. Outcome 0 = drops it.</td><td class="mono">Q88: high claim. Outcome 0 = drop.</td></tr>
+      <tr><td class="id">41</td><td class="name">Punch <span class="badge badge-gk">GK</span></td><td class="desc">Goalkeeper punches ball clear. Q56 shows pitch zone.</td><td class="mono">Q56: zone of punch</td></tr>
+      <tr><td class="id">52</td><td class="name">Keeper Pick-up <span class="badge badge-gk">GK</span></td><td class="desc">Goalkeeper picks up the ball from open play.</td><td class="mono">No qualifier filter for touches</td></tr>
+      <tr><td class="id">53</td><td class="name">Cross Not Claimed <span class="badge badge-gk">GK</span></td><td class="desc">Cross delivered but GK does not successfully catch it. Distinct from Q11=Claim with outcome 0.</td><td class="mono">Negative GK event</td></tr>
+      <tr><td class="id">54</td><td class="name">Smother <span class="badge badge-gk">GK</span></td><td class="desc">GK comes out and covers the ball in the box winning possession.</td><td class="mono">Rare, aggressive GK event</td></tr>
+      <tr><td class="id">58</td><td class="name">Penalty Faced <span class="badge badge-gk">GK</span></td><td class="desc">Goalkeeper facing a penalty kick. Q186=scored against, Q187=saved, Q188=missed by taker.</td><td class="mono">Q186/187/188: outcome of pen.</td></tr>
+      <tr><td class="id">59</td><td class="name">Keeper Sweeper <span class="badge badge-gk">GK</span></td><td class="desc">GK comes off line and/or out of box to clear ball. Outcome 0 = concedes possession, 1 = clears to teammate or out of play.</td><td class="mono">Sweeper-keeper metric. Outcome matters.</td></tr>
+      <tr><td class="id">63</td><td class="name">Temp_Save <span class="badge badge-admin">TEMP</span></td><td class="desc">Save occurred without full details. Event 10 will follow.</td><td class="mono">→ becomes type 10</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══════════ EVENTS: DEFENSIVE ═══════════ -->
+<section class="section" id="events-def">
+  <div class="section-eyebrow">Event Types — Defensive</div>
+  <div class="section-title">Defensive & Ball Recovery Events</div>
+
+  <table class="ref-table">
+    <thead><tr><th>ID</th><th>Name</th><th>Full Description</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="id">8</td><td class="name">Interception <span class="badge badge-def">DEF</span></td><td class="desc">Player intercepts a pass between opposition players, preventing it reaching its target. Cannot be a clearance.</td><td class="mono">Always outcome=1. Q14=last line.</td></tr>
+      <tr><td class="id">12</td><td class="name">Clearance <span class="badge badge-def">DEF</span></td><td class="desc">Player under pressure hits ball clear of defensive zone or out of play. Outcome 1=retained/cleared, 0=opponent gets it.</td><td class="mono">Q15=headed, Q128=punch, Q185=blocked cross</td></tr>
+      <tr><td class="id">49</td><td class="name">Ball Recovery <span class="badge badge-def">DEF</span></td><td class="desc">Team wins possession and successfully keeps it for at least two passes or an attacking play. Positive outcome only.</td><td class="mono">Requires 2+ passes to confirm. Q14=last line.</td></tr>
+      <tr><td class="id">51</td><td class="name">Error <span class="badge badge-def">ERROR</span></td><td class="desc">Mistake by player losing ball that leads to a shot or goal. Q169=leading to attempt, Q170=leading to goal.</td><td class="mono">Q169/Q170 distinguish severity.</td></tr>
+      <tr><td class="id">55</td><td class="name">Offside Provoked <span class="badge badge-def">DEF</span></td><td class="desc">Awarded to the last defender when an offside decision is given against an attacker. The defender who held the line.</td><td class="mono">Defensive line management metric.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══════════ EVENTS: DUEL ═══════════ -->
+<section class="section" id="events-duel">
+  <div class="section-eyebrow">Event Types — Duels</div>
+  <div class="section-title">Duel Events (Tackle, Aerial, Challenge)</div>
+
+  <table class="ref-table">
+    <thead><tr><th>ID</th><th>Name</th><th>Full Description</th><th>Outcome Logic</th></tr></thead>
+    <tbody>
+      <tr><td class="id">7</td><td class="name">Tackle <span class="badge badge-def">DUEL</span></td><td class="desc">Dispossesses an opponent. Outcome 1 = win AND retain possession (or ball goes out). Outcome 0 = win tackle but do not win possession.</td><td class="mono">Both outcomes are "tackle won". Outcome 1 = full success.</td></tr>
+      <tr><td class="id">44</td><td class="name">Aerial <span class="badge badge-def">DUEL</span></td><td class="desc">Aerial duel — 50/50 when ball is in the air. Each aerial generates TWO events (one per player). Outcome 1 = won, 0 = lost.</td><td class="mono">Both players get event. Win + Loss = same duel.</td></tr>
+      <tr><td class="id">45</td><td class="name">Challenge <span class="badge badge-def">DUEL</span></td><td class="desc">Player FAILS to win ball as opponent dribbles past them. By definition always outcome=0. If ball is won, it becomes type 7 (tackle).</td><td class="mono">Always outcome=0. Counts as duel lost.</td></tr>
+    </tbody>
+  </table>
+  <div class="callout callout-info">
+    <strong>ℹ Ground Duels total</strong> = typeId IN (3,4,7,45,54). Ground duels won = typeId IN (3,4,7,54) outcome=1. Ground duels lost = typeId IN (3,4,7,45,50) outcome=0.
+  </div>
+</section>
+
+<!-- ═══════════ EVENTS: CARD/FOUL ═══════════ -->
+<section class="section" id="events-card">
+  <div class="section-eyebrow">Event Types — Cards & Fouls</div>
+  <div class="section-title">Card & Foul Events</div>
+
+  <table class="ref-table">
+    <thead><tr><th>ID</th><th>Name</th><th>Full Description</th></tr></thead>
+    <tbody>
+      <tr><td class="id">4</td><td class="name">Foul <span class="badge badge-card">FOUL</span></td><td class="desc">Foul committed resulting in a free kick. Two events generated: outcome=1 for the fouling player, outcome=0 for the fouled player. Q9=penalty awarded.</td></tr>
+      <tr><td class="id">17</td><td class="name">Card <span class="badge badge-card">CARD</span></td><td class="desc">Bookings. Must have Q31 (yellow), Q32 (2nd yellow) or Q33 (red) PLUS a reason qualifier (Q34-40, Q158-166, Q184, Q191).</td></tr>
+      <tr><td class="id">47</td><td class="name">Rescinded Card</td><td class="desc">Post-match rescinding of a card awarded during the match. Q171 = rescinded.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══════════ EVENTS: ADMIN ═══════════ -->
+<section class="section" id="events-admin">
+  <div class="section-eyebrow">Event Types — Admin & System</div>
+  <div class="section-title">Administrative & System Events</div>
+  <div class="section-desc">These events structure the match but don't represent on-ball actions. Critical for parsing lineup data, formation changes, and delays.</div>
+
+  <table class="ref-table">
+    <thead><tr><th>ID</th><th>Name</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td class="id">18</td><td class="name">Player Off</td><td class="desc">Player substituted off. Q41=injury sub, Q42=tactical sub. Q59=jersey number.</td></tr>
+      <tr><td class="id">19</td><td class="name">Player On</td><td class="desc">Player comes on as substitute. Q145=formation slot they take.</td></tr>
+      <tr><td class="id">20</td><td class="name">Player Retired</td><td class="desc">Forced to leave due to injury with no subs left. Does not return.</td></tr>
+      <tr><td class="id">21</td><td class="name">Player Returns</td><td class="desc">Player comes back on the pitch (after injury-break). Q145=formation slot.</td></tr>
+      <tr><td class="id">22</td><td class="name">Player Becomes GK</td><td class="desc">Outfield player has to replace the goalkeeper.</td></tr>
+      <tr><td class="id">23</td><td class="name">GK Becomes Player</td><td class="desc">Goalkeeper becomes an outfield player.</td></tr>
+      <tr><td class="id">24</td><td class="name">Condition Change</td><td class="desc">Change in playing conditions (weather, pitch).</td></tr>
+      <tr><td class="id">25</td><td class="name">Official Change</td><td class="desc">Referee or linesman replaced. Q50=position, Q51=official ID.</td></tr>
+      <tr><td class="id">27</td><td class="name">Start Delay</td><td class="desc">Stoppage in play begins (injury, crowd trouble etc.). Q53=injured player ID. Q202-208 = delay reason.</td></tr>
+      <tr><td class="id">28</td><td class="name">End Delay</td><td class="desc">Stoppage ends, play resumes.</td></tr>
+      <tr><td class="id">30</td><td class="name">End (Period)</td><td class="desc">End of a match period. Q54=end cause. Q57=end type. Q209=game end flag. Q226=suspended. Q227=resumed.</td></tr>
+      <tr><td class="id">32</td><td class="name">Start (Period)</td><td class="desc">Start of a match period. Q127=direction of play (TV camera perspective). Coordinates always normalized regardless.</td></tr>
+      <tr><td class="id">34</td><td class="name">Team Set Up</td><td class="desc">Pre-match team lineup. Contains Q30 (all players), Q44 (positions), Q59 (jersey numbers), Q130 (formation), Q131 (formation slots), Q194 (captain), Q197 (kit).</td></tr>
+      <tr><td class="id">35</td><td class="name">Player Changed Position</td><td class="desc">Player moves to different position without formation change. Q44=new position.</td></tr>
+      <tr><td class="id">36</td><td class="name">Player Changed Jersey</td><td class="desc">Player forced to change jersey number. Q59=new number.</td></tr>
+      <tr><td class="id">37</td><td class="name">Collection End</td><td class="desc">End of match data collection. Q229=post-match QC complete.</td></tr>
+      <tr><td class="id">40</td><td class="name">Formation Change</td><td class="desc">Team alters formation mid-game. Q130=new formation, Q131=new slots.</td></tr>
+      <tr><td class="id">43</td><td class="name">Deleted Event</td><td class="desc">Event was deleted. Original event ID remains, type changes to 43. Q144=original event type (so you know what was deleted).</td></tr>
+      <tr><td class="id">64</td><td class="name">Resume</td><td class="desc">Match resumes on new date after abandonment.</td></tr>
+      <tr><td class="id">65</td><td class="name">Contentious Decision</td><td class="desc">Major talking point or referee error. Assigned to relevant team.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══════════ QUALIFIERS: PASS ═══════════ -->
+<section class="section" id="q-pass">
+  <div class="section-eyebrow">Qualifiers — Associated with Event Type 1</div>
+  <div class="section-title">Pass Event Qualifiers</div>
+  <div class="section-desc">These qualifiers appear on typeId=1 (and sometimes typeId=2). The most data-rich qualifiers in the entire feed — pass end coordinates, length, angle, and type flags.</div>
+
+  <table class="ref-table">
+    <thead><tr><th>Q ID</th><th>Name</th><th>Values</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td class="id">1</td><td class="name">Long Ball</td><td class="val">flag</td><td class="desc">Long pass over 35 yards. Presence = long ball.</td></tr>
+      <tr><td class="id">2</td><td class="name">Cross</td><td class="val">flag</td><td class="desc">Ball played in from wide areas into the box. Short corner = Q6 present WITHOUT Q2.</td></tr>
+      <tr><td class="id">3</td><td class="name">Head Pass</td><td class="val">flag</td><td class="desc">Pass made with the player's head (headed clearance to teammate also counts).</td></tr>
+      <tr><td class="id">4</td><td class="name">Through Ball</td><td class="val">flag</td><td class="desc">Ball played through for a player making an attacking run to create a goal chance.</td></tr>
+      <tr><td class="id">5</td><td class="name">Free Kick Taken</td><td class="val">flag</td><td class="desc">Any free kick delivery — direct or indirect. Use with Q26 to distinguish direct shots.</td></tr>
+      <tr><td class="id">6</td><td class="name">Corner Taken</td><td class="val">flag</td><td class="desc">All corners. Short corner = Q6 present without Q2 (no cross qualifier).</td></tr>
+      <tr><td class="id">7</td><td class="name">Players Caught Offside</td><td class="val">Player ID</td><td class="desc">The player who was in offside position when pass was made.</td></tr>
+      <tr><td class="id">8</td><td class="name">Goal Disallowed</td><td class="val">flag</td><td class="desc">Pass led to a goal disallowed for foul or offside.</td></tr>
+      <tr><td class="id">106</td><td class="name">Attacking Pass</td><td class="val">flag</td><td class="desc">Pass made in the opposition's half of the pitch (end_x based).</td></tr>
+      <tr><td class="id">107</td><td class="name">Throw-in</td><td class="val">flag</td><td class="desc">Throw-in taken. Exclude from pass totals (Q107, Q123, Q124 excluded from pass counts).</td></tr>
+      <tr><td class="id">123</td><td class="name">Keeper Throw</td><td class="val">flag</td><td class="desc">GK throws the ball out. Exclude from outfield pass totals.</td></tr>
+      <tr><td class="id">124</td><td class="name">Goal Kick</td><td class="val">flag</td><td class="desc">Goal kick. Exclude from outfield pass totals.</td></tr>
+      <tr><td class="id">140</td><td class="name">Pass End X</td><td class="val">0–100</td><td class="desc">X coordinate of where the pass landed/was received. Critical for progressive pass calculation and xT.</td></tr>
+      <tr><td class="id">141</td><td class="name">Pass End Y</td><td class="val">0–100</td><td class="desc">Y coordinate of where the pass landed. Use with Q140 for full pass trajectory.</td></tr>
+      <tr><td class="id">155</td><td class="name">Chipped</td><td class="val">flag</td><td class="desc">Pass chipped into the air over opponents.</td></tr>
+      <tr><td class="id">156</td><td class="name">Lay-off</td><td class="val">flag</td><td class="desc">Player laid the ball into the path of a teammate's run.</td></tr>
+      <tr><td class="id">157</td><td class="name">Launch</td><td class="val">flag</td><td class="desc">Pass from own half aimed at a zone rather than a specific player (GK punt style).</td></tr>
+      <tr><td class="id">168</td><td class="name">Flick-on</td><td class="val">flag</td><td class="desc">Player flicked the ball forward using their head.</td></tr>
+      <tr><td class="id">195</td><td class="name">Pull Back</td><td class="val">flag</td><td class="desc">Player in box reaches by-line and cuts the ball backwards to a teammate.</td></tr>
+      <tr><td class="id">196</td><td class="name">Switch of Play</td><td class="val">flag</td><td class="desc">Pass crosses centre zone AND length &gt;60 on Y axis — a genuine switch of play across the pitch.</td></tr>
+      <tr><td class="id">198</td><td class="name">GK Hoof</td><td class="val">flag</td><td class="desc">GK drops ball and kicks it long toward a zone rather than a player. Less controlled than Q199.</td></tr>
+      <tr><td class="id">199</td><td class="name">GK Kick from Hands</td><td class="val">flag</td><td class="desc">GK kicks straight out of hands. More controlled distribution.</td></tr>
+      <tr><td class="id">210</td><td class="name">Assist</td><td class="val">flag</td><td class="desc">Pass was an assist for a shot. If shot=goal → goal assist. If shot=saved/miss → key pass.</td></tr>
+      <tr><td class="id">212</td><td class="name">Length</td><td class="val">yards</td><td class="desc">Estimated distance ball travelled. Used for progressive pass and pass length distribution analysis.</td></tr>
+      <tr><td class="id">213</td><td class="name">Angle</td><td class="val">0–6.28 rad</td><td class="desc">Angle ball travels relative to direction of play. 0=forward, π/2=sideways, π=backward. Full circle = 2π.</td></tr>
+      <tr><td class="id">218</td><td class="name">2nd Assist</td><td class="val">flag</td><td class="desc">Pass created the opportunity for another player to assist the goal. MLS and Bundesliga 1&2 only.</td></tr>
+      <tr><td class="id">219</td><td class="name">Players on Both Posts</td><td class="val">flag</td><td class="desc">On Event 6 (corner): defensive players on both posts when corner was taken.</td></tr>
+      <tr><td class="id">220</td><td class="name">Player on Near Post</td><td class="val">flag</td><td class="desc">On Event 6: defender only on near post.</td></tr>
+      <tr><td class="id">221</td><td class="name">Player on Far Post</td><td class="val">flag</td><td class="desc">On Event 6: defender only on far post.</td></tr>
+      <tr><td class="id">222</td><td class="name">No Players on Posts</td><td class="val">flag</td><td class="desc">On Event 6: no defensive players on either post.</td></tr>
+      <tr><td class="id">223</td><td class="name">In-swinger</td><td class="val">flag</td><td class="desc">Corner swerves toward the goal (into the box).</td></tr>
+      <tr><td class="id">224</td><td class="name">Out-swinger</td><td class="val">flag</td><td class="desc">Corner swerves away from the goal.</td></tr>
+      <tr><td class="id">225</td><td class="name">Straight</td><td class="val">flag</td><td class="desc">Corner with straight ball flight — no swerve.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-tip">
+    <strong>💡 Progressive Pass Formula (Opta official):</strong><br>
+    Offensive pass = typeId=1, outcome=1, end_x &gt; start_x (excluding Q2,5,6,107,123,124)<br>
+    Defensive/backward pass = typeId=1, end_x &lt; start_x<br>
+    Sideways pass = end_x == start_x
+  </div>
+</section>
+
+<!-- ═══════════ QUALIFIERS: BODY PART & SITUATION ═══════════ -->
+<section class="section" id="q-bodypart">
+  <div class="section-eyebrow">Qualifiers — Shot Body Part & Play Situation</div>
+  <div class="section-title">Body Part, Pattern of Play & Assist Qualifiers</div>
+  <div class="section-desc">Applied to shot events (typeId 13, 14, 15, 16). These are the primary inputs to any xG model alongside coordinates.</div>
+
+  <div class="q-group-header">
+    <div class="qgh-title">Body Part</div>
+    <div class="qgh-sub">Exactly one of these will appear on every shot</div>
+    <span class="badge badge-shot qgh-badge">SHOTS</span>
+  </div>
+  <table class="ref-table">
+    <thead><tr><th>Q ID</th><th>Name</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td class="id">15</td><td class="name">Head</td><td class="desc">Any event using the player's head — shot, clearance, header pass.</td></tr>
+      <tr><td class="id">20</td><td class="name">Right Footed</td><td class="desc">Action performed with right foot.</td></tr>
+      <tr><td class="id">72</td><td class="name">Left Footed</td><td class="desc">Action performed with left foot.</td></tr>
+      <tr><td class="id">21</td><td class="name">Other Body Part</td><td class="desc">Not head, not foot — e.g. knee, chest, shoulder.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="q-group-header">
+    <div class="qgh-title">Pattern of Play / Situation</div>
+    <div class="qgh-sub">Exactly one of these appears on every shot — critical xG feature</div>
+    <span class="badge badge-shot qgh-badge">SHOTS</span>
+  </div>
+  <table class="ref-table">
+    <thead><tr><th>Q ID</th><th>Name</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td class="id">22</td><td class="name">Regular Play</td><td class="desc">Shot from open play — not from a set piece situation.</td></tr>
+      <tr><td class="id">23</td><td class="name">Fast Break</td><td class="desc">Shot following a fast break / counter-attack. Important for xG (more space = higher conversion).</td></tr>
+      <tr><td class="id">24</td><td class="name">Set Piece</td><td class="desc">Shot from a crossed free kick situation.</td></tr>
+      <tr><td class="id">25</td><td class="name">From Corner</td><td class="desc">Shot directly from a corner kick.</td></tr>
+      <tr><td class="id">26</td><td class="name">Free Kick (shot)</td><td class="desc">Shot taken directly from a free kick.</td></tr>
+      <tr><td class="id">96</td><td class="name">Corner Situation</td><td class="desc">2nd phase attack from corner (Q25 = direct; Q96 = second phase).</td></tr>
+      <tr><td class="id">112</td><td class="name">Scramble</td><td class="desc">Goal in a scramble where defence had opportunity to clear.</td></tr>
+      <tr><td class="id">160</td><td class="name">Throw-in Set Piece</td><td class="desc">Shot came from a throw-in set piece routine.</td></tr>
+      <tr><td class="id">9</td><td class="name">Penalty</td><td class="desc">Shot was a penalty kick. Also on typeId 4 when penalty is awarded.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="q-group-header">
+    <div class="qgh-title">Assist & Chain Qualifiers</div>
+    <div class="qgh-sub">Shot-level assist information — use with Q55 to reconstruct full pass chain</div>
+    <span class="badge badge-shot qgh-badge">SHOTS</span>
+  </div>
+  <table class="ref-table">
+    <thead><tr><th>Q ID</th><th>Name</th><th>Values</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td class="id">29</td><td class="name">Assisted</td><td class="val">flag</td><td class="desc">There was an assist pass from another player setting up the chance.</td></tr>
+      <tr><td class="id">55</td><td class="name">Related Event ID</td><td class="val">event_id</td><td class="desc">Value = event_id of the assisting pass. Use to find the assisting player's pass event.</td></tr>
+      <tr><td class="id">154</td><td class="name">Intentional Assist</td><td class="val">flag</td><td class="desc">The assisting pass was intentional (no deflections). Clean assist.</td></tr>
+      <tr><td class="id">215</td><td class="name">Individual Play</td><td class="val">flag</td><td class="desc">Player created the chance themselves (dribbled to create space) — not assisted.</td></tr>
+      <tr><td class="id">216</td><td class="name">2nd Related Event ID</td><td class="val">event_id</td><td class="desc">Event_id of the second assist (pass to the assister). MLS & Bundesliga.</td></tr>
+      <tr><td class="id">217</td><td class="name">2nd Assisted</td><td class="val">flag</td><td class="desc">Shot had a significant preceding pass to create the assist opportunity.</td></tr>
+      <tr><td class="id">214</td><td class="name">Big Chance</td><td class="val">flag</td><td class="desc">Analyst-tagged excellent opportunity — clear-cut chance e.g. one-on-one with GK.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══════════ QUALIFIERS: SHOT DESCRIPTORS ═══════════ -->
+<section class="section" id="q-shot">
+  <div class="section-eyebrow">Qualifiers — Shot Descriptor</div>
+  <div class="section-title">Shot Technical Descriptors</div>
+  <div class="section-desc">Subjective and technical tags applied to shots by Opta analysts. Many now deprecated but included for historical data compatibility.</div>
+
+  <table class="ref-table">
+    <thead><tr><th>Q ID</th><th>Name</th><th>Status</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td class="id">113</td><td class="name">Strong</td><td><span class="badge badge-shot">ACTIVE</span></td><td class="desc">Shot subjectively classed as strong.</td></tr>
+      <tr><td class="id">114</td><td class="name">Weak</td><td><span class="badge badge-shot">ACTIVE</span></td><td class="desc">Shot subjectively classed as weak. Useful for expected conversion modeling.</td></tr>
+      <tr><td class="id">115</td><td class="name">Rising</td><td><span class="badge badge-shot">ACTIVE</span></td><td class="desc">Shot was rising in the air at moment of goal crossing.</td></tr>
+      <tr><td class="id">116</td><td class="name">Dipping</td><td><span class="badge badge-shot">ACTIVE</span></td><td class="desc">Shot was dipping toward the ground.</td></tr>
+      <tr><td class="id">117</td><td class="name">Lob</td><td><span class="badge badge-shot">ACTIVE</span></td><td class="desc">Attempt to play ball over goalkeeper into goal.</td></tr>
+      <tr><td class="id">120</td><td class="name">Swerve Left</td><td><span class="badge badge-shot">ACTIVE</span></td><td class="desc">Shot swerves left from attacker's perspective.</td></tr>
+      <tr><td class="id">121</td><td class="name">Swerve Right</td><td><span class="badge badge-shot">ACTIVE</span></td><td class="desc">Shot swerves right from attacker's perspective.</td></tr>
+      <tr><td class="id">122</td><td class="name">Swerve Moving</td><td><span class="badge badge-shot">ACTIVE</span></td><td class="desc">Shot swerves in multiple directions.</td></tr>
+      <tr><td class="id">133</td><td class="name">Deflection</td><td><span class="badge badge-shot">ACTIVE</span></td><td class="desc">Shot deflected off another player before reaching goal.</td></tr>
+      <tr><td class="id">136</td><td class="name">Keeper Touched</td><td><span class="badge badge-shot">ACTIVE</span></td><td class="desc">Goal where GK got a touch on the ball. (On type 16=goal events.)</td></tr>
+      <tr><td class="id">137</td><td class="name">Keeper Saved</td><td><span class="badge badge-shot">ACTIVE</span></td><td class="desc">Shot going wide/over but GK saved it anyway (event type 15 with this = outside post but saved).</td></tr>
+      <tr><td class="id">138</td><td class="name">Hit Woodwork</td><td><span class="badge badge-shot">ACTIVE</span></td><td class="desc">Ball hit post or crossbar.</td></tr>
+      <tr><td class="id">153</td><td class="name">Not Past Goal Line</td><td><span class="badge badge-shot">ACTIVE</span></td><td class="desc">Shot missed but did not pass the goal line (stopped short).</td></tr>
+      <tr><td class="id">228</td><td class="name">Own Shot Blocked</td><td><span class="badge badge-shot">ACTIVE</span></td><td class="desc">Player unintentionally blocks a shot from their own teammate.</td></tr>
+      <tr><td class="id">28</td><td class="name">Own Goal</td><td><span class="badge badge-shot">ACTIVE</span></td><td class="desc">Own goal. On type 16, team_id = conceding team. Use inverse coordinates.</td></tr>
+      <tr><td class="id">108</td><td class="name">Volley</td><td><span class="badge badge-deprecated">DEPRECATED</span></td><td class="desc">NO LONGER USED. Ball doesn't bounce before shot.</td></tr>
+      <tr><td class="id">109</td><td class="name">Overhead</td><td><span class="badge badge-deprecated">DEPRECATED</span></td><td class="desc">NO LONGER USED. Overhead kick shot.</td></tr>
+      <tr><td class="id">110</td><td class="name">Half Volley</td><td><span class="badge badge-deprecated">DEPRECATED</span></td><td class="desc">NO LONGER USED. Hit immediately after bounce.</td></tr>
+      <tr><td class="id">111</td><td class="name">Diving Header</td><td><span class="badge badge-deprecated">DEPRECATED</span></td><td class="desc">NO LONGER USED. Diving to head.</td></tr>
+      <tr><td class="id">118</td><td class="name">One Bounce</td><td><span class="badge badge-deprecated">DEPRECATED</span></td><td class="desc">NO LONGER USED.</td></tr>
+      <tr><td class="id">119</td><td class="name">Few Bounces</td><td><span class="badge badge-deprecated">DEPRECATED</span></td><td class="desc">NO LONGER USED.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══════════ QUALIFIERS: SHOT LOCATION ═══════════ -->
+<section class="section" id="q-shot-loc">
+  <div class="section-eyebrow">Qualifiers — Shot Location Grid</div>
+  <div class="section-title">Shot Zone & Goalmouth Location Qualifiers</div>
+  <div class="section-desc">Pitch zone qualifiers (Q16-19, Q60-71) indicate which area the shot was taken from. Goalmouth qualifiers (Q76-87, Q102/103) indicate where on the goal the ball went.</div>
+
+  <div class="q-group-header">
+    <div class="qgh-title">Shot Zone Qualifiers (Pitch Location)</div>
+    <div class="qgh-sub">See Appendix 13 pitch zone diagram</div>
+  </div>
+  <table class="ref-table">
+    <thead><tr><th>Q ID</th><th>Zone Name</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td class="id">16</td><td class="name">Small Box Centre</td><td class="desc">6-yard box, central area (highest xG zone)</td></tr>
+      <tr><td class="id">17</td><td class="name">Box Centre</td><td class="desc">Penalty area, central area</td></tr>
+      <tr><td class="id">18</td><td class="name">Out of Box Centre</td><td class="desc">Central, just outside penalty area</td></tr>
+      <tr><td class="id">19</td><td class="name">35+ Centre</td><td class="desc">Central, 35+ yards from goal</td></tr>
+      <tr><td class="id">60</td><td class="name">Small Box Right</td><td class="desc">6-yard box, right side</td></tr>
+      <tr><td class="id">61</td><td class="name">Small Box Left</td><td class="desc">6-yard box, left side</td></tr>
+      <tr><td class="id">62</td><td class="name">Box Deep Right</td><td class="desc">Deep in box, right channel</td></tr>
+      <tr><td class="id">63</td><td class="name">Box Right</td><td class="desc">Penalty area, right side</td></tr>
+      <tr><td class="id">64</td><td class="name">Box Left</td><td class="desc">Penalty area, left side</td></tr>
+      <tr><td class="id">65</td><td class="name">Box Deep Left</td><td class="desc">Deep in box, left channel</td></tr>
+      <tr><td class="id">66</td><td class="name">Out of Box Deep Right</td><td class="desc">Outside box, deep right</td></tr>
+      <tr><td class="id">67</td><td class="name">Out of Box Right</td><td class="desc">Outside box, right</td></tr>
+      <tr><td class="id">68</td><td class="name">Out of Box Left</td><td class="desc">Outside box, left</td></tr>
+      <tr><td class="id">69</td><td class="name">Out of Box Deep Left</td><td class="desc">Outside box, deep left</td></tr>
+      <tr><td class="id">70</td><td class="name">35+ Right</td><td class="desc">35+ yards from goal, right</td></tr>
+      <tr><td class="id">71</td><td class="name">35+ Left</td><td class="desc">35+ yards from goal, left</td></tr>
+    </tbody>
+  </table>
+
+  <div class="q-group-header" style="margin-top:24px">
+    <div class="qgh-title">Miss Direction Qualifiers</div>
+    <div class="qgh-sub">On typeId=13 (Miss) — where did it go?</div>
+  </div>
+  <table class="ref-table">
+    <thead><tr><th>Q ID</th><th>Name</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td class="id">73</td><td class="name">Left</td><td class="desc">Hit left post or missed left of goal.</td></tr>
+      <tr><td class="id">74</td><td class="name">High</td><td class="desc">Hit crossbar or missed over the goal.</td></tr>
+      <tr><td class="id">75</td><td class="name">Right</td><td class="desc">Hit right post or missed right of goal.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="q-group-header" style="margin-top:24px">
+    <div class="qgh-title">Goalmouth Placement Qualifiers</div>
+    <div class="qgh-sub">On saved shots (type 15) — where in the goal did it go? Derived from Q102/Q103 coordinates.</div>
+  </div>
+  <table class="ref-table">
+    <thead><tr><th>Q ID</th><th>Name</th><th>end_y range</th><th>end_z range</th></tr></thead>
+    <tbody>
+      <tr><td class="id">76</td><td class="name">Low Left</td><td class="mono">51.8 ≤ y ≤ 54.8</td><td class="mono">0 ≤ z ≤ 20</td></tr>
+      <tr><td class="id">77</td><td class="name">High Left</td><td class="mono">51.8 ≤ y ≤ 54.8</td><td class="mono">20 ≤ z ≤ 38</td></tr>
+      <tr><td class="id">78</td><td class="name">Low Centre</td><td class="mono">48.2 ≤ y ≤ 51.8</td><td class="mono">0 ≤ z ≤ 20</td></tr>
+      <tr><td class="id">79</td><td class="name">High Centre</td><td class="mono">48.2 ≤ y ≤ 51.8</td><td class="mono">20 ≤ z ≤ 38</td></tr>
+      <tr><td class="id">80</td><td class="name">Low Right</td><td class="mono">45.2 ≤ y ≤ 48.2</td><td class="mono">0 ≤ z ≤ 20</td></tr>
+      <tr><td class="id">81</td><td class="name">High Right</td><td class="mono">45.2 ≤ y ≤ 48.2</td><td class="mono">20 ≤ z ≤ 38</td></tr>
+      <tr><td class="id">82</td><td class="name">Blocked</td><td colspan="2" class="desc">Shot blocked by outfield player (not GK)</td></tr>
+      <tr><td class="id">83</td><td class="name">Close Left</td><td class="mono">55.8 ≤ y ≤ 59.3</td><td class="mono">0 ≤ z ≤ 40</td></tr>
+      <tr><td class="id">84</td><td class="name">Close Right</td><td class="mono">40.7 ≤ y ≤ 44.2</td><td class="mono">0 ≤ z ≤ 40</td></tr>
+      <tr><td class="id">85</td><td class="name">Close High</td><td class="mono">44.2 ≤ y ≤ 55.8</td><td class="mono">42 ≤ z ≤ 60</td></tr>
+      <tr><td class="id">86</td><td class="name">Close Left & High</td><td class="mono">55.8 ≤ y ≤ 59.3</td><td class="mono">40 ≤ z ≤ 60</td></tr>
+      <tr><td class="id">87</td><td class="name">Close Right & High</td><td class="mono">40.7 ≤ y ≤ 44.2</td><td class="mono">40 ≤ z ≤ 60</td></tr>
+      <tr><td class="id">100</td><td class="name">Six Yard Blocked</td><td colspan="2" class="desc">Shot blocked on the 6-yard line.</td></tr>
+      <tr><td class="id">101</td><td class="name">Saved Off Line</td><td colspan="2" class="desc">Shot saved on the goal line itself.</td></tr>
+      <tr><td class="id">102</td><td class="name">Goal Mouth Y</td><td class="val">0–100</td><td class="desc">Y coordinate where shot crossed goal line. 0=right post (attacker view), 100=left post. 50=centre.</td></tr>
+      <tr><td class="id">103</td><td class="name">Goal Mouth Z</td><td class="val">0–100</td><td class="desc">Z (height) coordinate. 0=ground, 100=top. Real-world: goal is 2.44m high.</td></tr>
+      <tr><td class="id">146</td><td class="name">Blocked X</td><td class="val">0–100</td><td class="desc">Pitch X coordinate where a shot was blocked.</td></tr>
+      <tr><td class="id">147</td><td class="name">Blocked Y</td><td class="val">0–100</td><td class="desc">Pitch Y coordinate where a shot was blocked.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══════════ QUALIFIERS: GK ═══════════ -->
+<section class="section" id="q-gk">
+  <div class="section-eyebrow">Qualifiers — Goalkeeper Technique</div>
+  <div class="section-title">Goalkeeper Save Technique Qualifiers</div>
+  <div class="section-desc">These qualifiers appear on typeId=10 (Save). They enable detailed goalkeeper performance analysis including technique difficulty rating.</div>
+
+  <div class="q-group-header">
+    <div class="qgh-title">Save Technique</div>
+    <div class="qgh-sub">How the GK stopped the shot</div>
+    <span class="badge badge-gk qgh-badge">typeId=10</span>
+  </div>
+  <table class="ref-table">
+    <thead><tr><th>Q ID</th><th>Name</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td class="id">90</td><td class="name">Deflected Save</td><td class="desc">GK saves but does not catch — deflects ball clear.</td></tr>
+      <tr><td class="id">91</td><td class="name">Dive & Deflect</td><td class="desc">GK dives and deflects shot — does not catch. Highest difficulty.</td></tr>
+      <tr><td class="id">92</td><td class="name">Catch</td><td class="desc">GK saves and catches ball cleanly. Secure possession.</td></tr>
+      <tr><td class="id">93</td><td class="name">Dive & Catch</td><td class="desc">GK dives and catches cleanly.</td></tr>
+      <tr><td class="id">173</td><td class="name">Parried Safe</td><td class="desc">Save parried to safety — no danger from rebound.</td></tr>
+      <tr><td class="id">174</td><td class="name">Parried Danger</td><td class="desc">Save parried but only to another opponent — high danger. Negative quality indicator.</td></tr>
+      <tr><td class="id">175</td><td class="name">Fingertip</td><td class="desc">Save using fingertips — marginal save, high difficulty.</td></tr>
+      <tr><td class="id">176</td><td class="name">Caught</td><td class="desc">GK catches the ball (same family as Q92).</td></tr>
+      <tr><td class="id">177</td><td class="name">Collected</td><td class="desc">GK saves and collects possession cleanly.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="q-group-header" style="margin-top:16px">
+    <div class="qgh-title">GK Body Position</div>
+    <div class="qgh-sub">GK stance/movement when making the save</div>
+    <span class="badge badge-gk qgh-badge">typeId=10</span>
+  </div>
+  <table class="ref-table">
+    <thead><tr><th>Q ID</th><th>Name</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td class="id">178</td><td class="name">Standing</td><td class="desc">GK made save while standing — no dive required.</td></tr>
+      <tr><td class="id">179</td><td class="name">Diving</td><td class="desc">GK made save while diving. Higher difficulty indicator.</td></tr>
+      <tr><td class="id">180</td><td class="name">Stooping</td><td class="desc">GK stooped to make save (low ball).</td></tr>
+      <tr><td class="id">181</td><td class="name">Reaching</td><td class="desc">GK reached for the ball.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="q-group-header" style="margin-top:16px">
+    <div class="qgh-title">GK Save Body Part & Special</div>
+    <span class="badge badge-gk qgh-badge">typeId=10</span>
+  </div>
+  <table class="ref-table">
+    <thead><tr><th>Q ID</th><th>Name</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td class="id">182</td><td class="name">Hands</td><td class="desc">GK saved with hands.</td></tr>
+      <tr><td class="id">183</td><td class="name">Feet</td><td class="desc">GK saved with feet. Often high difficulty.</td></tr>
+      <tr><td class="id">88</td><td class="name">High Claim</td><td class="desc">On typeId=11 (Claim): GK claims a high crossed ball.</td></tr>
+      <tr><td class="id">89</td><td class="name">1 on 1</td><td class="desc">Attacker clear with no defenders between them and GK. Can appear on types 10,11,12,13,14,15,16.</td></tr>
+      <tr><td class="id">94</td><td class="name">Def Block</td><td class="desc">On typeId=10: blocked by outfield defender, not GK.</td></tr>
+      <tr><td class="id">139</td><td class="name">Own Player</td><td class="desc">Shot saved by GK but deflected by a defender first.</td></tr>
+      <tr><td class="id">190</td><td class="name">From Shot Off Target</td><td class="desc">GK saved it but shot was actually going wide — not truly on target.</td></tr>
+      <tr><td class="id">186</td><td class="name">Scored (GK context)</td><td class="desc">On typeId=58 (Penalty Faced): shot resulted in goal against GK.</td></tr>
+      <tr><td class="id">187</td><td class="name">Saved (GK context)</td><td class="desc">On typeId=58: GK saved the penalty.</td></tr>
+      <tr><td class="id">188</td><td class="name">Missed (GK context)</td><td class="desc">On typeId=58: penalty taker missed — no save needed.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══════════ QUALIFIERS: FOUL/CARD ═══════════ -->
+<section class="section" id="q-foul">
+  <div class="section-eyebrow">Qualifiers — Fouls & Cards</div>
+  <div class="section-title">Foul Type & Card Reason Qualifiers</div>
+
+  <div class="q-group-header">
+    <div class="qgh-title">Foul Type</div>
+    <div class="qgh-sub">Appears on typeId=4 (Foul)</div>
+    <span class="badge badge-card qgh-badge">typeId=4</span>
+  </div>
+  <table class="ref-table">
+    <thead><tr><th>Q ID</th><th>Name</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td class="id">10</td><td class="name">Hand</td><td class="desc">Handball foul.</td></tr>
+      <tr><td class="id">11</td><td class="name">6-Seconds Violation</td><td class="desc">GK held ball longer than 6 seconds.</td></tr>
+      <tr><td class="id">12</td><td class="name">Dangerous Play</td><td class="desc">Foul due to dangerous play.</td></tr>
+      <tr><td class="id">13</td><td class="name">Foul</td><td class="desc">General foul.</td></tr>
+      <tr><td class="id">9</td><td class="name">Penalty</td><td class="desc">Penalty awarded (on typeId=4 foul event).</td></tr>
+      <tr><td class="id">95</td><td class="name">Back Pass</td><td class="desc">Illegal back pass to GK with hands.</td></tr>
+      <tr><td class="id">132</td><td class="name">Dive / Simulation</td><td class="desc">Player penalised for diving.</td></tr>
+      <tr><td class="id">191</td><td class="name">Off the Ball Foul</td><td class="desc">Foul by and on player not in possession.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="q-group-header" style="margin-top:16px">
+    <div class="qgh-title">Card Reason Qualifiers</div>
+    <div class="qgh-sub">Appears on typeId=17 (Card)</div>
+    <span class="badge badge-card qgh-badge">typeId=17</span>
+  </div>
+  <table class="ref-table">
+    <thead><tr><th>Q ID</th><th>Color</th><th>Q ID</th><th>Reason</th></tr></thead>
+    <tbody>
+      <tr><td class="id">31</td><td class="desc">Yellow Card</td><td class="id">34</td><td class="desc">Referee Abuse</td></tr>
+      <tr><td class="id">32</td><td class="desc">Second Yellow → Red</td><td class="id">35</td><td class="desc">Argument</td></tr>
+      <tr><td class="id">33</td><td class="desc">Straight Red Card</td><td class="id">36</td><td class="desc">Fight</td></tr>
+      <tr><td class="id">37</td><td class="desc">Time Wasting</td><td class="id">38</td><td class="desc">Excessive Celebration</td></tr>
+      <tr><td class="id">39</td><td class="desc">Crowd Interaction</td><td class="id">40</td><td class="desc">Other Reason</td></tr>
+      <tr><td class="id">158</td><td class="desc">Persistent Infringement</td><td class="id">159</td><td class="desc">Foul & Abusive Language</td></tr>
+      <tr><td class="id">161</td><td class="desc">Encroachment</td><td class="id">162</td><td class="desc">Leaving Field Without Permission</td></tr>
+      <tr><td class="id">163</td><td class="desc">Entering Field During Play</td><td class="id">164</td><td class="desc">Spitting</td></tr>
+      <tr><td class="id">165</td><td class="desc">Professional Foul</td><td class="id">166</td><td class="desc">Handling on Goal Line</td></tr>
+      <tr><td class="id">172</td><td class="desc">No Impact on Timing (bench booking)</td><td class="id">184</td><td class="desc">Dissent</td></tr>
+      <tr><td class="id">192</td><td class="desc">Block by Hand (shot blocked)</td><td></td><td></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══════════ QUALIFIERS: DEFENSIVE ═══════════ -->
+<section class="section" id="q-def">
+  <div class="section-eyebrow">Qualifiers — Defensive Events</div>
+  <div class="section-title">Defensive Qualifier Codes</div>
+
+  <table class="ref-table">
+    <thead><tr><th>Q ID</th><th>Name</th><th>Events</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td class="id">14</td><td class="name">Last Line</td><td class="mono">7,8,49</td><td class="desc">Player making the defensive action is the last person between opponent and goal. Critical in defensive metrics.</td></tr>
+      <tr><td class="id">56</td><td class="name">Zone</td><td class="mono">All</td><td class="desc">Area on the pitch: Back, Left, Centre, Right. See pitch zone diagram.</td></tr>
+      <tr><td class="id">167</td><td class="name">Out of Play</td><td class="mono">7,12</td><td class="desc">Tackle or clearance sent the ball out of play.</td></tr>
+      <tr><td class="id">169</td><td class="name">Leading to Attempt</td><td class="mono">51</td><td class="desc">Player error (typeId=51) led to an opposition shot on goal.</td></tr>
+      <tr><td class="id">170</td><td class="name">Leading to Goal</td><td class="mono">51</td><td class="desc">Player error (typeId=51) led to an opposition goal.</td></tr>
+      <tr><td class="id">185</td><td class="name">Blocked Cross</td><td class="mono">12</td><td class="desc">Clearance where a cross was blocked.</td></tr>
+      <tr><td class="id">211</td><td class="name">Overrun</td><td class="mono">3</td><td class="desc">Take on where ball ran away (not always a duel). Distinct from a clean dribble.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══════════ QUALIFIERS: LINEUP ═══════════ -->
+<section class="section" id="q-lineup">
+  <div class="section-eyebrow">Qualifiers — Lineup, Formation, Officials</div>
+  <div class="section-title">Lineup & Formation Qualifiers</div>
+  <div class="section-desc">These qualifiers appear on typeId=34 (Team Set Up), typeId=18/19 (substitutions), and typeId=40 (formation change). They reconstruct the full lineup.</div>
+
+  <table class="ref-table">
+    <thead><tr><th>Q ID</th><th>Name</th><th>Values</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td class="id">30</td><td class="name">Involved</td><td class="val">Player IDs (CSV)</td><td class="desc">All players in starting lineup and available substitutes. Comma-separated Opta Player IDs.</td></tr>
+      <tr><td class="id">44</td><td class="name">Player Position</td><td class="val">1=GK, 2=DEF, 3=MID, 4=FWD</td><td class="desc">Natural/default position. NOT necessarily the position played in this match — use Q131 for actual match position.</td></tr>
+      <tr><td class="id">59</td><td class="name">Jersey Number</td><td class="val">Shirt numbers (CSV)</td><td class="desc">Shirt numbers in same order as Q30 player list. Used for subs and lineup events.</td></tr>
+      <tr><td class="id">130</td><td class="name">Team Formation</td><td class="val">Formation code (1-18)</td><td class="desc">Formation code. See Appendix 14 / Formation Code table below. e.g. 8 = 4-2-3-1.</td></tr>
+      <tr><td class="id">131</td><td class="name">Team Player Formation (Slot)</td><td class="val">1–11, then 0s for subs</td><td class="desc">Position slot in formation for each player (same order as Q30). Slots 1-11 = starters. 0 = substitute. Slot 1 = GK.</td></tr>
+      <tr><td class="id">145</td><td class="name">Formation Slot</td><td class="val">1–11</td><td class="desc">Formation slot of a player coming on (typeId=19). Which position they take in the formation.</td></tr>
+      <tr><td class="id">194</td><td class="name">Captain</td><td class="val">Player ID</td><td class="desc">Opta Player ID of team captain. Present on typeId=34.</td></tr>
+      <tr><td class="id">197</td><td class="name">Team Kit</td><td class="val">Kit ID</td><td class="desc">Kit color identifier used in this match.</td></tr>
+      <tr><td class="id">41</td><td class="name">Injury</td><td class="val">flag</td><td class="desc">On typeId=18: substitution was forced due to injury.</td></tr>
+      <tr><td class="id">42</td><td class="name">Tactical</td><td class="val">flag</td><td class="desc">On typeId=18: substitution was tactical choice by manager.</td></tr>
+      <tr><td class="id">50</td><td class="name">Official Position</td><td class="val">1,2,3,4</td><td class="desc">1=Referee, 2=Linesman#1, 3=Linesman#2, 4=4th Official.</td></tr>
+      <tr><td class="id">51</td><td class="name">Official ID</td><td class="val">Official ID</td><td class="desc">Unique Opta ID for the match official.</td></tr>
+      <tr><td class="id">49</td><td class="name">Attendance Figure</td><td class="val">Integer</td><td class="desc">Number of people in the crowd for this match.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-info">
+    <strong>ℹ Reading Q130+Q131 together.</strong> Q130 value gives the formation code (e.g., 8 = 4-2-3-1). Q131 lists the slot number for each player in the same order as Q30's player ID list. Player in slot 2 = position 2 in that formation. Slots are laid out right to left, defense to forwards. In a 4-4-2: slot 2 = right back, 3 = right CB, 4 = left CB, 5 = left back.
+  </div>
+</section>
+
+<!-- ═══════════ QUALIFIERS: GENERAL ═══════════ -->
+<section class="section" id="q-general">
+  <div class="section-eyebrow">Qualifiers — General & Stoppages</div>
+  <div class="section-title">General, Admin & Stoppage Qualifiers</div>
+
+  <table class="ref-table">
+    <thead><tr><th>Q ID</th><th>Name</th><th>Events</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td class="id">54</td><td class="name">End Cause</td><td class="mono">30</td><td class="desc">Why period ended. Values: 1=Golden goal, 2=weather, 3=crowd, 4=insufficient players, 5=floodlight failure, 6=frozen pitch, 7=waterlogged pitch, 99=other, 100=unknown.</td></tr>
+      <tr><td class="id">57</td><td class="name">End Type</td><td class="mono">30</td><td class="desc">Direction of play / type of period end.</td></tr>
+      <tr><td class="id">127</td><td class="name">Direction of Play</td><td class="mono">32</td><td class="desc">"Right to Left" or "Left to Right" — the ACTUAL direction relative to TV camera. Coordinates are ALWAYS normalized L→R regardless.</td></tr>
+      <tr><td class="id">144</td><td class="name">Deleted Event Type</td><td class="mono">43</td><td class="desc">On deleted events (typeId=43): value = the original event type that was deleted.</td></tr>
+      <tr><td class="id">189</td><td class="name">Player Not Visible</td><td class="mono">any</td><td class="desc">Broadcast showing replay — Opta analyst's best estimate of what occurred.</td></tr>
+      <tr><td class="id">200</td><td class="name">Referee Stop</td><td class="mono">27</td><td class="desc">Referee stops play.</td></tr>
+      <tr><td class="id">201</td><td class="name">Referee Delay</td><td class="mono">27</td><td class="desc">Delay instructed by referee.</td></tr>
+      <tr><td class="id">202</td><td class="name">Weather Problem</td><td class="mono">27</td><td class="desc">Bad weather stops play.</td></tr>
+      <tr><td class="id">203</td><td class="name">Crowd Trouble</td><td class="mono">27</td><td class="desc">Crowd trouble causes delay.</td></tr>
+      <tr><td class="id">205</td><td class="name">Object Thrown on Pitch</td><td class="mono">27</td><td class="desc">Foreign object from crowd delays play.</td></tr>
+      <tr><td class="id">206</td><td class="name">Spectator on Pitch</td><td class="mono">27</td><td class="desc">Pitch invasion causes delay.</td></tr>
+      <tr><td class="id">207</td><td class="name">Awaiting Officials Decision</td><td class="mono">27</td><td class="desc">Referee yet to make decision — delay pending.</td></tr>
+      <tr><td class="id">208</td><td class="name">Referee Injury</td><td class="mono">27</td><td class="desc">Referee injured causing stoppage.</td></tr>
+      <tr><td class="id">209</td><td class="name">Game End</td><td class="mono">30</td><td class="desc">The game is finished (on End event).</td></tr>
+      <tr><td class="id">226</td><td class="name">Suspended</td><td class="mono">30</td><td class="desc">Game suspended mid-match (not yet ended).</td></tr>
+      <tr><td class="id">227</td><td class="name">Resumed</td><td class="mono">34,64</td><td class="desc">Game resumed after suspension on a different date.</td></tr>
+      <tr><td class="id">229</td><td class="name">Post-match Complete</td><td class="mono">37</td><td class="desc">Opta's post-match quality control is complete. Data is final.</td></tr>
+      <tr><td class="id">53</td><td class="name">Injured Player ID</td><td class="mono">27</td><td class="desc">ID of the player causing the injury delay.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══════════ COORDINATE SYSTEMS ═══════════ -->
+<section class="section" id="coords-pitch">
+  <div class="section-eyebrow">Appendix 11</div>
+  <div class="section-title">Pitch Coordinate System</div>
+  <div class="section-desc">All x,y coordinates are expressed as a percentage of pitch length/width. The attacking direction is ALWAYS left-to-right regardless of team or period.</div>
+
+  <div class="pitch-container">
+    <svg class="pitch-svg" viewBox="0 0 700 450" xmlns="http://www.w3.org/2000/svg">
+      <!-- Pitch outline -->
+      <rect x="30" y="30" width="640" height="390" fill="none" stroke="#2a5c2a" stroke-width="2"/>
+      <!-- Centre line -->
+      <line x1="350" y1="30" x2="350" y2="420" stroke="#2a5c2a" stroke-width="1.5"/>
+      <!-- Centre circle -->
+      <circle cx="350" cy="225" r="60" fill="none" stroke="#2a5c2a" stroke-width="1.5"/>
+      <circle cx="350" cy="225" r="3" fill="#2a5c2a"/>
+      <!-- Left penalty area -->
+      <rect x="30" y="112" width="132" height="226" fill="none" stroke="#2a5c2a" stroke-width="1.5"/>
+      <!-- Left 6-yard box -->
+      <rect x="30" y="168" width="44" height="114" fill="none" stroke="#2a5c2a" stroke-width="1.5"/>
+      <!-- Left goal -->
+      <rect x="14" y="196" width="16" height="58" fill="none" stroke="#4a9eff" stroke-width="2"/>
+      <!-- Right penalty area -->
+      <rect x="538" y="112" width="132" height="226" fill="none" stroke="#2a5c2a" stroke-width="1.5"/>
+      <!-- Right 6-yard box -->
+      <rect x="626" y="168" width="44" height="114" fill="none" stroke="#2a5c2a" stroke-width="1.5"/>
+      <!-- Right goal -->
+      <rect x="670" y="196" width="16" height="58" fill="none" stroke="#ff6b35" stroke-width="2"/>
+      <!-- Coordinate labels -->
+      <text x="30" y="22" fill="#555" font-family="IBM Plex Mono" font-size="11">(0,0)</text>
+      <text x="610" y="22" fill="#555" font-family="IBM Plex Mono" font-size="11">(100,0)</text>
+      <text x="30" y="440" fill="#555" font-family="IBM Plex Mono" font-size="11">(0,100)</text>
+      <text x="600" y="440" fill="#555" font-family="IBM Plex Mono" font-size="11">(100,100)</text>
+      <!-- Axis labels -->
+      <text x="320" y="248" fill="#4a9eff" font-family="IBM Plex Mono" font-size="12" font-weight="500">X axis →</text>
+      <text x="345" y="135" fill="#2dd4a0" font-family="IBM Plex Mono" font-size="11">Y↓</text>
+      <!-- Direction arrow -->
+      <defs><marker id="arr" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#4a9eff"/></marker></defs>
+      <line x1="80" y1="225" x2="620" y2="225" stroke="#4a9eff" stroke-width="1" stroke-dasharray="6,4" marker-end="url(#arr)" opacity="0.3"/>
+      <!-- Labels -->
+      <text x="8" y="228" fill="#4a9eff" font-family="IBM Plex Mono" font-size="10">DEF</text>
+      <text x="647" y="228" fill="#ff6b35" font-family="IBM Plex Mono" font-size="10">ATK</text>
+      <text x="140" y="228" fill="#555" font-family="IBM Plex Mono" font-size="10">x=0</text>
+      <text x="630" y="228" fill="#555" font-family="IBM Plex Mono" font-size="10">x=100</text>
+      <text x="80" y="350" fill="#2dd4a0" font-family="IBM Plex Mono" font-size="10">y=100</text>
+      <text x="80" y="65" fill="#2dd4a0" font-family="IBM Plex Mono" font-size="10">y=0</text>
+      <!-- Penalty spot -->
+      <circle cx="570" cy="225" r="3" fill="#ff6b35"/>
+      <text x="548" y="216" fill="#ff6b35" font-family="IBM Plex Mono" font-size="9">pen spot</text>
+    </svg>
+  </div>
+
+  <div class="callout callout-info">
+    <strong>ℹ Always Left-to-Right.</strong> The defending goal is at x=0, attacking goal at x=100 for EVERY event, EVERY team, EVERY half. Q127 tells you the actual TV camera direction but you should never flip coordinates in your analysis.
+  </div>
+  <div class="callout callout-tip">
+    <strong>💡 Useful coordinate thresholds:</strong><br>
+    Final third: x &gt; 66.7 | Own half: x &lt; 50 | Penalty area: x &gt; 83 AND 21 &lt; y &lt; 79<br>
+    6-yard box: x &gt; 94 AND 37 &lt; y &lt; 63 | Corner into box: 83 &lt; end_x &lt; 100 AND 21 &lt; end_y &lt; 79
+  </div>
+</section>
+
+<!-- ═══════════ GOALMOUTH COORDINATES ═══════════ -->
+<section class="section" id="coords-goal">
+  <div class="section-eyebrow">Appendix 12</div>
+  <div class="section-title">Goalmouth Coordinate System (Q102 & Q103)</div>
+  <div class="section-desc">Where exactly on the goal did the shot go? Q102=Y position, Q103=Z height. Both 0–100. The goal is 7.32m wide × 2.44m high in reality.</div>
+
+  <div class="goal-container">
+    <svg viewBox="0 0 500 200" width="500" xmlns="http://www.w3.org/2000/svg" style="display:block">
+      <!-- Goal frame -->
+      <rect x="50" y="20" width="400" height="150" fill="none" stroke="#4a9eff" stroke-width="2.5"/>
+      <!-- Grid lines -->
+      <line x1="50" y1="90" x2="450" y2="90" stroke="#1a2a3a" stroke-width="1"/>
+      <line x1="250" y1="20" x2="250" y2="170" stroke="#1a2a3a" stroke-width="1"/>
+      <!-- Zones - saved shots (Q76-81) -->
+      <rect x="50" y="95" width="133" height="75" fill="rgba(74,158,255,0.08)" stroke="#1a2a3a" stroke-width="0.5"/>
+      <text x="116" y="140" fill="#4a9eff" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">Low Left (76)</text>
+      <rect x="50" y="20" width="133" height="75" fill="rgba(74,158,255,0.08)" stroke="#1a2a3a" stroke-width="0.5"/>
+      <text x="116" y="62" fill="#4a9eff" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">High Left (77)</text>
+      <rect x="183" y="95" width="134" height="75" fill="rgba(45,212,160,0.08)" stroke="#1a2a3a" stroke-width="0.5"/>
+      <text x="250" y="140" fill="#2dd4a0" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">Low Centre (78)</text>
+      <rect x="183" y="20" width="134" height="75" fill="rgba(45,212,160,0.08)" stroke="#1a2a3a" stroke-width="0.5"/>
+      <text x="250" y="62" fill="#2dd4a0" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">High Centre (79)</text>
+      <rect x="317" y="95" width="133" height="75" fill="rgba(255,107,53,0.08)" stroke="#1a2a3a" stroke-width="0.5"/>
+      <text x="383" y="140" fill="#ff6b35" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">Low Right (80)</text>
+      <rect x="317" y="20" width="133" height="75" fill="rgba(255,107,53,0.08)" stroke="#1a2a3a" stroke-width="0.5"/>
+      <text x="383" y="62" fill="#ff6b35" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">High Right (81)</text>
+      <!-- Y axis label -->
+      <text x="250" y="190" fill="#555" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">Y: 0 (right post) ←────────── 50 (centre) ──────────→ 100 (left post)</text>
+      <!-- Z axis -->
+      <text x="15" y="175" fill="#555" font-family="IBM Plex Mono" font-size="9">Z=0</text>
+      <text x="15" y="28" fill="#555" font-family="IBM Plex Mono" font-size="9">Z=100</text>
+    </svg>
+  </div>
+
+  <div class="callout callout-tip">
+    <strong>💡 xGOT formula.</strong> Use Q102 and Q103 to compute where the shot went on goal. Compare to average save probability for that goal zone to get post-shot xG. Harder zones (top corners = Q77/Q81/Q87) have lower save probability even for same-distance shots.
+  </div>
+</section>
+
+<!-- ═══════════ PITCH ZONES ═══════════ -->
+<section class="section" id="coords-zones">
+  <div class="section-eyebrow">Appendix 13</div>
+  <div class="section-title">Pitch Zone System (Q56)</div>
+  <div class="section-desc">Q56 appears on almost every event and gives the pitch zone as a text value. Used for spatial filtering and heatmaps.</div>
+
+  <div class="pitch-container">
+    <svg viewBox="0 0 640 400" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-width:640px;display:block;margin:0 auto">
+      <!-- Pitch -->
+      <rect x="20" y="20" width="600" height="360" fill="none" stroke="#2a5c2a" stroke-width="2"/>
+      <line x1="320" y1="20" x2="320" y2="380" stroke="#2a5c2a" stroke-width="1.5"/>
+      <!-- Back zone (x < 33) -->
+      <rect x="20" y="20" width="177" height="360" fill="rgba(74,158,255,0.08)" stroke="none"/>
+      <text x="108" y="205" fill="#4a9eff" font-family="IBM Plex Mono" font-size="14" font-weight="600" text-anchor="middle">BACK</text>
+      <text x="108" y="222" fill="#4a9eff" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">x &lt; 33</text>
+      <!-- Left zone (y < 33) -->
+      <rect x="20" y="20" width="600" height="119" fill="rgba(167,139,250,0.05)" stroke="none"/>
+      <text x="390" y="85" fill="#a78bfa" font-family="IBM Plex Mono" font-size="12" font-weight="600" text-anchor="middle">LEFT (y &lt; 33)</text>
+      <!-- Right zone (y > 66) -->
+      <rect x="20" y="261" width="600" height="119" fill="rgba(255,107,53,0.05)" stroke="none"/>
+      <text x="390" y="325" fill="#ff6b35" font-family="IBM Plex Mono" font-size="12" font-weight="600" text-anchor="middle">RIGHT (y &gt; 66)</text>
+      <!-- Centre zone -->
+      <rect x="20" y="139" width="600" height="122" fill="rgba(45,212,160,0.05)" stroke="none"/>
+      <text x="450" y="205" fill="#2dd4a0" font-family="IBM Plex Mono" font-size="12" font-weight="600" text-anchor="middle">CENTRE (33 ≤ y ≤ 66)</text>
+      <!-- Zone borders -->
+      <line x1="197" y1="20" x2="197" y2="380" stroke="#333" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="20" y1="139" x2="620" y2="139" stroke="#333" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="20" y1="261" x2="620" y2="261" stroke="#333" stroke-width="1" stroke-dasharray="4,3"/>
+      <!-- Forward zone -->
+      <text x="460" y="60" fill="#fbbf24" font-family="IBM Plex Mono" font-size="11" font-weight="600" text-anchor="middle">FINAL THIRD (x &gt; 66)</text>
+      <line x1="423" y1="20" x2="423" y2="380" stroke="#333" stroke-width="1" stroke-dasharray="4,3"/>
+    </svg>
+  </div>
+
+  <p style="font-size:12px;color:var(--text2);margin-top:12px">Q56 values: <span style="color:var(--pass)">Back</span> (own defensive area), <span style="color:var(--def)">Left</span>, <span style="color:var(--gk)">Centre</span>, <span style="color:var(--shot)">Right</span>. These are from the event team's perspective — "Back" = behind midfield, "Centre" = centre of pitch horizontally (y axis), etc. Not to be confused with the shot zone qualifiers (Q16-71).</p>
+</section>
+
+<!-- ═══════════ FORMATIONS ═══════════ -->
+<section class="section" id="formations">
+  <div class="section-eyebrow">Appendix 14</div>
+  <div class="section-title">Formation Codes (Q130)</div>
+  <div class="section-desc">Q130 gives a formation code number. Formation 1 is not used. Player slots (Q131) are laid out right to left, defense to forwards. In a 4-4-2: slot 2=right back, 3=right CB, 4=left CB, 5=left back.</div>
+
+  <div class="formation-grid">
+    <div class="formation-card"><div class="f-num">Code 2</div><div class="f-name">4-4-2</div></div>
+    <div class="formation-card"><div class="f-num">Code 3</div><div class="f-name">4-1-2-1-2 (Diamond)</div></div>
+    <div class="formation-card"><div class="f-num">Code 4</div><div class="f-name">4-3-3</div></div>
+    <div class="formation-card"><div class="f-num">Code 5</div><div class="f-name">4-5-1</div></div>
+    <div class="formation-card"><div class="f-num">Code 6</div><div class="f-name">4-4-1-1</div></div>
+    <div class="formation-card"><div class="f-num">Code 7</div><div class="f-name">4-1-4-1</div></div>
+    <div class="formation-card"><div class="f-num">Code 8</div><div class="f-name">4-2-3-1</div></div>
+    <div class="formation-card"><div class="f-num">Code 9</div><div class="f-name">4-3-2-1 (Christmas Tree)</div></div>
+    <div class="formation-card"><div class="f-num">Code 10</div><div class="f-name">5-3-2</div></div>
+    <div class="formation-card"><div class="f-num">Code 11</div><div class="f-name">5-4-1</div></div>
+    <div class="formation-card"><div class="f-num">Code 12</div><div class="f-name">3-5-2</div></div>
+    <div class="formation-card"><div class="f-num">Code 13</div><div class="f-name">3-4-3</div></div>
+    <div class="formation-card"><div class="f-num">Code 14</div><div class="f-name">3-1-3-1-2</div></div>
+    <div class="formation-card"><div class="f-num">Code 15</div><div class="f-name">4-2-2-2</div></div>
+    <div class="formation-card"><div class="f-num">Code 16</div><div class="f-name">3-5-1-1</div></div>
+    <div class="formation-card"><div class="f-num">Code 17</div><div class="f-name">3-4-2-1</div></div>
+    <div class="formation-card"><div class="f-num">Code 18</div><div class="f-name">3-4-1-2</div></div>
+  </div>
+
+  <div class="callout callout-info" style="margin-top:16px">
+    <strong>ℹ Slot numbering (right to left, defense to attack).</strong> Slot 1 = GK. Then outfield players numbered right to left, defense first. For 4-4-2 (code 2): 2=RB, 3=RCB, 4=LCB, 5=LB, 6=RM, 7=RCM, 8=LCM, 9=LM, 10=RS, 11=LS.
+  </div>
+</section>
+
+<!-- ═══════════ ASSOCIATED QUALIFIERS ═══════════ -->
+<section class="section" id="assoc-quals">
+  <div class="section-eyebrow">Appendix 9</div>
+  <div class="section-title">Qualifier Codes Per Event Type</div>
+  <div class="section-desc">The official list of qualifier_ids that can appear with each event type. This is the definitive reference for knowing which qualifiers to expect.</div>
+
+  <div class="assoc-block">
+    <div class="assoc-row"><div class="assoc-tid">1</div><div class="assoc-name">Pass</div><div class="assoc-qids">1, 2, 4, 5, 6, 15, 22, 23, 24, 25, 26, 29, 31, 55, 56, 96, 97, 106, 107, 123, 124, 138, 140, 141, 154, 155, 156, 157, 160, 168, 195, 196, 198, 199, 210, 212, 213, 214, 218, 223, 224, 225</div></div>
+    <div class="assoc-row"><div class="assoc-tid">2</div><div class="assoc-name">Offside Pass</div><div class="assoc-qids">1, 2, 3, 4, 5, 6, 7, 8, 55, 56, 107, 123, 124, 140, 141</div></div>
+    <div class="assoc-row"><div class="assoc-tid">3</div><div class="assoc-name">Take On</div><div class="assoc-qids">56, 211</div></div>
+    <div class="assoc-row"><div class="assoc-tid">4</div><div class="assoc-name">Foul</div><div class="assoc-qids">9, 10, 11, 12, 13, 34, 40, 56, 95, 132, 184</div></div>
+    <div class="assoc-row"><div class="assoc-tid">5</div><div class="assoc-name">Out</div><div class="assoc-qids">56</div></div>
+    <div class="assoc-row"><div class="assoc-tid">6</div><div class="assoc-name">Corner Awarded</div><div class="assoc-qids">56, 73, 219, 220, 221, 222</div></div>
+    <div class="assoc-row"><div class="assoc-tid">7</div><div class="assoc-name">Tackle</div><div class="assoc-qids">14, 56, 167</div></div>
+    <div class="assoc-row"><div class="assoc-tid">8</div><div class="assoc-name">Interception</div><div class="assoc-qids">13, 14, 15, 31, 32, 56</div></div>
+    <div class="assoc-row"><div class="assoc-tid">10</div><div class="assoc-name">Save</div><div class="assoc-qids">1, 2, 9, 14, 15, 17, 21, 25, 29, 55, 56, 82, 88, 90, 91, 92, 93, 94, 101, 102, 103, 137, 139, 173, 175, 176, 177, 178, 179, 180, 181, 182, 183, 190</div></div>
+    <div class="assoc-row"><div class="assoc-tid">11</div><div class="assoc-name">Claim</div><div class="assoc-qids">1, 2, 56, 88</div></div>
+    <div class="assoc-row"><div class="assoc-tid">12</div><div class="assoc-name">Clearance</div><div class="assoc-qids">1, 2, 14, 15, 56, 91, 128, 167, 185</div></div>
+    <div class="assoc-row"><div class="assoc-tid">13</div><div class="assoc-name">Miss</div><div class="assoc-qids">1, 2, 9, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 29, 55, 56, 60–71, 72, 73, 74, 75, 76–87, 96, 97, 100, 102, 103, 108–111, 113, 114, 115, 116, 117, 120, 121, 133, 137, 146, 147, 153, 154, 160, 188, 214, 215</div></div>
+    <div class="assoc-row"><div class="assoc-tid">14</div><div class="assoc-name">Post</div><div class="assoc-qids">5, 9, 15, 16–19, 20, 21, 22–26, 29, 55, 56, 60–71, 72, 73, 74, 75, 81, 96, 97, 102, 103, 108, 109, 111, 113, 114, 116, 117, 120, 121, 133, 146, 147, 154, 160, 214, 215</div></div>
+    <div class="assoc-row"><div class="assoc-tid">15</div><div class="assoc-name">Attempt Saved</div><div class="assoc-qids">1, 2, 9, 14, 15, 16–21, 22–26, 29, 55, 56, 60–71, 72, 73–75, 76–87, 96, 97, 100, 101, 102, 103, 108–111, 113–117, 120, 121, 122, 133, 138, 139, 146, 147, 154, 160, 192, 214, 215</div></div>
+    <div class="assoc-row"><div class="assoc-tid">16</div><div class="assoc-name">Goal</div><div class="assoc-qids">2, 9, 15, 16–21, 22–26, 29, 40, 55, 56, 60–71, 72, 73–75, 76–81, 83–87, 96, 97, 102, 103, 108–111, 113, 114, 117, 120, 121, 133, 136, 138, 146, 147</div></div>
+    <div class="assoc-row"><div class="assoc-tid">17</div><div class="assoc-name">Card</div><div class="assoc-qids">10, 11, 12, 13, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 56, 95, 132, 158, 159, 161, 162, 163, 164, 165, 166, 171, 172, 184, 191</div></div>
+    <div class="assoc-row"><div class="assoc-tid">18</div><div class="assoc-name">Player Off</div><div class="assoc-qids">41, 42, 44, 55, 59, 83, 227</div></div>
+    <div class="assoc-row"><div class="assoc-tid">19</div><div class="assoc-name">Player On</div><div class="assoc-qids">41, 42, 44, 55, 59, 145, 227</div></div>
+    <div class="assoc-row"><div class="assoc-tid">27</div><div class="assoc-name">Start Delay</div><div class="assoc-qids">41, 53, 200, 201, 202, 203, 204, 205, 206, 207, 208</div></div>
+    <div class="assoc-row"><div class="assoc-tid">30</div><div class="assoc-name">Period End</div><div class="assoc-qids">54, 57, 209, 226, 227</div></div>
+    <div class="assoc-row"><div class="assoc-tid">32</div><div class="assoc-name">Period Start</div><div class="assoc-qids">127</div></div>
+    <div class="assoc-row"><div class="assoc-tid">34</div><div class="assoc-name">Team Set Up</div><div class="assoc-qids">30, 44, 59, 130, 131, 194, 197, 227</div></div>
+    <div class="assoc-row"><div class="assoc-tid">40</div><div class="assoc-name">Formation Change</div><div class="assoc-qids">30, 44, 59, 130, 131, 227</div></div>
+    <div class="assoc-row"><div class="assoc-tid">44</div><div class="assoc-name">Aerial</div><div class="assoc-qids">9, 13, 55, 56</div></div>
+    <div class="assoc-row"><div class="assoc-tid">45</div><div class="assoc-name">Challenge</div><div class="assoc-qids">31, 56</div></div>
+    <div class="assoc-row"><div class="assoc-tid">49</div><div class="assoc-name">Ball Recovery</div><div class="assoc-qids">14, 56</div></div>
+    <div class="assoc-row"><div class="assoc-tid">51</div><div class="assoc-name">Error</div><div class="assoc-qids">169, 170</div></div>
+    <div class="assoc-row"><div class="assoc-tid">58</div><div class="assoc-name">Penalty Faced</div><div class="assoc-qids">9, 56, 73, 75, 138, 178, 179, 186, 187, 188</div></div>
+    <div class="assoc-row"><div class="assoc-tid">60</div><div class="assoc-name">Chance Missed</div><div class="assoc-qids">55, 56, 154</div></div>
+    <div class="assoc-row"><div class="assoc-tid">61</div><div class="assoc-name">Ball Touch</div><div class="assoc-qids">56, 138, 228</div></div>
+  </div>
+</section>
+
+<!-- ═══════════ STAT QUERIES ═══════════ -->
+<section class="section" id="stat-queries">
+  <div class="section-eyebrow">Appendix 3</div>
+  <div class="section-title">Official Opta Stat Query Formulas</div>
+  <div class="section-desc">These are Opta's official definitions for computing common statistics from F24 events. Use these as the source of truth.</div>
+
+  <div style="font-size:11px;color:var(--text3);margin-bottom:16px">Format: Stat Name | typeId(s) | outcome filter | qualifier filter | extra conditions | exclude qualifier(s)</div>
+
+  <div class="q-group-header"><div class="qgh-title">Passing Statistics</div></div>
+  <pre><span class="c-cmt">// Passes Total (open play only)</span>
+typeId=1, <span class="c-fn">EXCLUDE</span> Q2,5,6,107,123,124
+<span class="c-cmt">// Short corners included: Q6 present BUT NOT Q2</span>
+
+<span class="c-cmt">// Pass Completion %</span>
+successful = typeId=1, outcome=1, <span class="c-fn">EXCLUDE</span> Q2,5,6,107,123,124
+total      = typeId=1, <span class="c-fn">EXCLUDE</span> Q2,5,6,107,123,124
+
+<span class="c-cmt">// Crosses (open play)</span>
+total   = typeId=1, Q2 present, <span class="c-fn">EXCLUDE</span> Q5,6
+success = typeId=1, Q2 present, outcome=1, <span class="c-fn">EXCLUDE</span> Q5,6
+
+<span class="c-cmt">// Long Passes</span>
+total   = typeId=1, Q1 present, <span class="c-fn">EXCLUDE</span> Q2,5,6,107,123,124
+success = typeId=1, Q1 present, outcome=1
+
+<span class="c-cmt">// Progressive (forward/offensive) Passes</span>
+forward  = typeId=1, end_x > start_x, <span class="c-fn">EXCLUDE</span> Q2,5,6,107,123,124
+backward = typeId=1, end_x &lt; start_x
+sideways = typeId=1, end_x == start_x
+
+<span class="c-cmt">// Key Passes</span>
+key_passes = typeId in (13,14,15), Q29 present, Q55 present
+
+<span class="c-cmt">// Assists</span>
+assists = typeId=16, outcome=1, Q29 present, Q55 present
+<span class="c-cmt">// Q55 value = event_id of the assisting pass</span>
+
+<span class="c-cmt">// Corners</span>
+total         = typeId=1, Q6 present
+into_box_succ = typeId=1, Q6 present, outcome=1, 83&lt;end_x&lt;100, 21&lt;end_y&lt;78.9
+into_box_fail = typeId=1, Q6 present, outcome=0, 83&lt;end_x&lt;100, 21&lt;end_y&lt;78.9
+free_kicks    = typeId=1, Q5 present</pre>
+
+  <div class="q-group-header"><div class="qgh-title">Defensive Statistics</div></div>
+  <pre><span class="c-cmt">// Tackles</span>
+won  = typeId=7, outcome=1  <span class="c-cmt">// OR outcome=0 — both = "tackle won", 1 = also won possession</span>
+lost = typeId=45            <span class="c-cmt">// Challenge (always = lost tackle)</span>
+
+<span class="c-cmt">// Interceptions</span>
+total = typeId=8
+
+<span class="c-cmt">// Saves (GK)</span>
+total            = typeId=10, outcome=1
+blocked_by_outfielder = typeId=10, outcome=1, Q94 present
+
+<span class="c-cmt">// Clearances</span>
+won    = typeId=12, outcome=1
+lost   = typeId=12, outcome=0
+headed = typeId=12, Q15 present
+
+<span class="c-cmt">// Aerial Duels</span>
+total = typeId=44
+won   = typeId=44, outcome=1
+lost  = typeId=44, outcome=0
+
+<span class="c-cmt">// Ground Duels</span>
+total = typeId in (3,4,7,45,54)
+won   = typeId in (3,4,7,54), outcome=1
+lost  = typeId in (3,4,7,45,50), outcome=0</pre>
+
+  <div class="q-group-header"><div class="qgh-title">Shot & Goal Statistics</div></div>
+  <pre><span class="c-cmt">// All Shot Categories</span>
+shots_total      = typeId in (13,14,15,16)
+shots_on_target  = typeId in (15,16), <span class="c-fn">EXCLUDE</span> Q82  <span class="c-cmt">// exclude blocked shots</span>
+shots_off_target = typeId in (13,14)
+shots_blocked    = typeId=15, Q82 present
+
+<span class="c-cmt">// Goals breakdown</span>
+goals_total     = typeId=16, outcome=1
+goals_open_play = typeId=16, outcome=1, Q22 present
+goals_set_piece = typeId=16, outcome=1, Q24 present
+goals_penalty   = typeId=16, outcome=1, Q9 present
+own_goals       = typeId=16, outcome=0, Q28 present  <span class="c-cmt">// team_id = conceding team</span>
+
+<span class="c-cmt">// Headed shots</span>
+headed_on_target  = typeId in (15,16), Q15 present, <span class="c-fn">EXCLUDE</span> Q82
+headed_total      = typeId in (13,14,15,16), Q15 present
+headed_off_target = typeId in (13,14), Q15 present</pre>
+
+  <div class="q-group-header"><div class="qgh-title">Fouls, Cards & Duels</div></div>
+  <pre><span class="c-cmt">// Fouls</span>
+fouls_won       = typeId=4, outcome=1
+fouls_conceded  = typeId=4, outcome=0
+penalty_conceded = typeId=4, outcome=0, Q9 present
+handball        = typeId=4, outcome=0, Q10 present
+
+<span class="c-cmt">// Cards</span>
+yellow  = typeId=17, Q31 present
+red2nd  = typeId=17, Q32 present
+red     = typeId=17, Q33 present
+
+<span class="c-cmt">// Take Ons (Dribbles)</span>
+successful   = typeId=3, outcome=1
+unsuccessful = typeId=3, outcome=0  <span class="c-cmt">// Q211=overrun (optional to include)</span></pre>
+</section>
+
+<!-- ═══════════ TOUCHES ═══════════ -->
+<section class="section" id="touches">
+  <div class="section-eyebrow">Appendix 3 — Touch Calculation</div>
+  <div class="section-title">Total Touches Calculation</div>
+  <div class="section-desc">Official Opta formula for calculating all touches. Used to compute per-touch statistics.</div>
+
+  <pre><span class="c-cmt">// TOTAL TOUCHES = all events of these types, regardless of qualifiers, outcome, or position:</span>
+base_types = [<span class="c-num">2,3,7,8,9,10,11,12,13,14,15,16,41,42,50,52,54,61</span>]
+
+<span class="c-cmt">// PLUS typeId=1 EXCEPT those with Q123 (keeper throw) — i.e. include all passes except GK throws</span>
+pass_touches = typeId=1, <span class="c-fn">EXCLUDE</span> Q123
+
+<span class="c-cmt">// Total:</span>
+touches = base_types_events + pass_touches</pre>
+
+  <div class="callout callout-warn">
+    <strong>⚠ Important:</strong> Q123 (Keeper Throw) is excluded from touch counts. Throw-ins (Q107), goal kicks (Q124) are NOT excluded from touches — only keeper throws.
+  </div>
+</section>
+
+<!-- ═══════════ ASSIST LOGIC ═══════════ -->
+<section class="section" id="assists">
+  <div class="section-eyebrow">Appendix 4</div>
+  <div class="section-title">Assist & Key Pass Chain Logic</div>
+  <div class="section-desc">How to use Q55 (Related Event ID) to trace the assist chain. This is the most complex relationship in the feed.</div>
+
+  <div class="callout callout-info">
+    <strong>The chain:</strong> Shot event (typeId 13/15/16) has Q55 with value = event_id of the assist pass. Find that pass event → playerId = assisting player. If shot is a goal AND pass has Q210 (Assist) → goal assist. If shot is not a goal AND pass has Q210 → key pass.
+  </div>
+
+  <pre><span class="c-cmt">// STEP 1: Find the shot event</span>
+shot = event where typeId in [15, 16] and Q29 present  <span class="c-cmt">// Q29 = assisted</span>
+
+<span class="c-cmt">// STEP 2: Get event_id of the assist pass from Q55</span>
+assist_event_id = shot.qualifiers[Q55].value
+
+<span class="c-cmt">// STEP 3: Find the assist pass</span>
+assist_pass = events where eventId == assist_event_id
+
+<span class="c-cmt">// STEP 4: Classify</span>
+<span class="c-kw">if</span> shot.typeId == <span class="c-num">16</span>:    <span class="c-cmt">// Goal</span>
+    assist_pass → <span class="c-fn">GOAL ASSIST</span>
+<span class="c-kw">else</span>:                    <span class="c-cmt">// Attempt saved or miss</span>
+    assist_pass → <span class="c-fn">KEY PASS</span>
+
+<span class="c-cmt">// Q154 (Intentional Assist) on the pass = clean, deliberate assist (no deflection)</span>
+<span class="c-cmt">// Q216 (2nd Related Event ID) = event_id of pre-assist (pass to the assister)</span>
+<span class="c-cmt">// Attribute: keypass="1" on pass, assist="1" on pass in XML (not in JSON qualifier)</span></pre>
+
+  <div class="callout callout-tip">
+    <strong>💡 Important note from appendix:</strong> <code>keypass="1"</code> on a pass = directly led to a shot (not goal). <code>assist="1"</code> on a pass = directly led to a goal. Both can be confirmed via Q55 on the shot linking back to the pass.
+  </div>
+</section>
+
+<!-- ═══════════ DELETED EVENTS ═══════════ -->
+<section class="section" id="deleted">
+  <div class="section-eyebrow">Appendix 6 & 7</div>
+  <div class="section-title">Deleted & Edited Events</div>
+  <div class="section-desc">Events can be deleted or modified live or post-match. Correct handling is critical for data pipeline integrity.</div>
+
+  <div class="q-group-header"><div class="qgh-title">Deleted Events (typeId=43)</div></div>
+  <pre><span class="c-cmt">// When an event is deleted, the original event is resent with typeId changed to 43</span>
+<span class="c-cmt">// The original event id remains the same — use it to find and remove the old version</span>
+<span class="c-cmt">// Q144 value = the original typeId that was deleted</span>
+
+deleted_event = {
+  <span class="c-key">"id"</span>: <span class="c-num">328486810</span>,    <span class="c-cmt">// Same id as original event</span>
+  <span class="c-key">"typeId"</span>: <span class="c-num">43</span>,       <span class="c-cmt">// Now shows as deleted</span>
+  <span class="c-key">"qualifier"</span>: [
+    { <span class="c-key">"qualifierId"</span>: <span class="c-num">144</span>, <span class="c-key">"value"</span>: <span class="c-str">"50"</span> }  <span class="c-cmt">// Q144 = original type was 50 (Dispossessed)</span>
+  ]
+}
+
+<span class="c-cmt">// CORRECT handling: search your database by id=328486810, remove that event</span></pre>
+
+  <div class="q-group-header" style="margin-top:16px"><div class="qgh-title">Edited Events</div></div>
+  <pre><span class="c-cmt">// Edited events arrive with updated lastModified timestamp</span>
+<span class="c-cmt">// The event id does NOT change, but qualifier ids DO change when qualifiers are modified</span>
+
+<span class="c-cmt">// CORRECT handling: only re-parse events where lastModified > your last parse time</span>
+new_events = [e for e in feed if e.lastModified > last_parsed_at]</pre>
+</section>
+
+</main>
+</div>
+
+<script>
+// Sidebar active nav on scroll
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-link');
+
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      navLinks.forEach(l => {
+        l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, { threshold: 0.15, rootMargin: '-80px 0px -60% 0px' });
+
+sections.forEach(s => obs.observe(s));
+
+navLinks.forEach(l => {
+  l.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(l.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+</body>
+</html>
